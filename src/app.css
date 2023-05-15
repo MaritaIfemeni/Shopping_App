@@ -1,6 +1,7 @@
 nav {
   display: flex;
   margin: 2em;
+  padding: auto;
   justify-content: space-between;
   align-items: center;
   min-height: 8vh;
