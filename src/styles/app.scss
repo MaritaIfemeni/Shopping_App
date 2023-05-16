@@ -1,16 +1,16 @@
-nav {
-  display: flex;
-  margin: 2em;
-  padding: auto;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 8vh;
-  font-family: "Montserrat", sans-serif;
-  
-}
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Montserrat", sans-serif;
+  text-align: center;
+}
+
+nav {
+  margin-top: 3em;
+  & :link {
+    padding: 0 1rem;
+  }
+}
+
+main {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1rem;
 }
