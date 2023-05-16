@@ -1,10 +1,14 @@
 import React from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 
+import Cart from "./Cart";
+import useModal from "../hooks/useModal";
+
 const HomePage = () => {
   const location = useLocation();
   const isProductsPage = location.pathname.includes("/products");
   const isLoginPage = location.pathname.includes("/login");
+  const { toggle, isOpen } = useModal();
 
   return (
     <div>
@@ -13,8 +17,12 @@ const HomePage = () => {
           <nav className="testi">
             <Link to="/">Home</Link>
             <Link to="/products">Products</Link>
-            <Link to="/cart">Cart</Link>
             <Link to="/login">Log In</Link>
+            <button onClick={toggle}>Cart</button>
+            <Cart isOpen={isOpen} toggle={toggle}>
+              <p>Modal Content</p>
+              <button onClick={toggle}>Close Cart</button>
+            </Cart>
           </nav>
         </header>
         <main>

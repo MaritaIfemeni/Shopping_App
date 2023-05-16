@@ -34,10 +34,6 @@ const routes: any = createBrowserRouter([
           path: "/products",
           element: <ProductsPage />,
         },
-        {
-          path: "/cart",
-          element: <Cart />,
-        },
       ],
     },
   ]);

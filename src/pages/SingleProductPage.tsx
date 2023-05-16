@@ -3,11 +3,14 @@ import { useParams } from "react-router";
 import axios from "axios";
 
 import { Product } from "../types/Product";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { addItem } from "../redux/reducers/cartReducer";
 
 const SingleProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product>();
   const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
   useEffect(() => {
     axios
       .get(`https://api.escuelajs.co/api/v1/products/${id}`)
@@ -24,6 +27,10 @@ const SingleProductPage = () => {
   if (error) {
     return <p>{error}</p>;
   }
+
+  const handleAddToCart = (product: Product) => {
+    dispatch(addItem(product));
+  };
 
   return (
     <div>
@@ -42,6 +49,9 @@ const SingleProductPage = () => {
             <td>{product.title}</td>
             <td>{product.price}</td>
             <td>{product.description}</td>
+            <button onClick={() => handleAddToCart(product)}>
+              Add to cart
+            </button>
           </tr>
         </tbody>
       </table>
