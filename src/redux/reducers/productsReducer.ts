@@ -5,22 +5,20 @@ import { Product } from "../../types/Product";
 
 const initialState: {
     products: Product[];
-    currentPage: number;
     loading: boolean;
     error: string;
   } = {
     products: [],
-    currentPage: 1,
     loading: false,
     error: "",
   };
 
   export const fetchAllProducts = createAsyncThunk(
     "fetcAllProducts",
-    async (page: number) => {
+    async () => {
       try {
         const result = await axios.get<Product[]>(
-          `https://api.escuelajs.co/api/v1/products?offset=${page}&limit=10`
+          "https://api.escuelajs.co/api/v1/products/"
         );
         return result.data; 
       } catch (e) {
@@ -34,13 +32,11 @@ const initialState: {
     name: "products",
     initialState,
     reducers: {
-      createProduct: (state, action: PayloadAction<Product>) => {
-        state.products.push(action.payload);
-      },
-      setCurrentPage: (state, action: PayloadAction<number>) => {
-        state.currentPage = action.payload;
-      },
-  
+      //TODO:
+      // createProduct: (state, action: PayloadAction<Product>) => {
+      //   state.products.push(action.payload);
+      // },
+      // deleteProduct: for admin user.
     },
     extraReducers: (build) => {
       build
@@ -62,7 +58,7 @@ const initialState: {
   });
   
   const productsReducer = productsSlice.reducer;
-  export const { createProduct, setCurrentPage } =
-    productsSlice.actions;
+  // export const { createProduct } =
+  //   productsSlice.actions;
   export default productsReducer;
   

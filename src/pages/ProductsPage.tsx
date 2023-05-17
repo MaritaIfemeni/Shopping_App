@@ -3,50 +3,46 @@ import { Link } from "react-router-dom";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-import {
-  fetchAllProducts,
-  setCurrentPage,
-} from "../redux/reducers/productsReducer";
+import useDebounce from "../hooks/useDebounce";
+import getFilteredList from "../hooks/getFilteredList";
+import { fetchAllProducts } from "../redux/reducers/productsReducer";
 import { Product } from "../types/Product";
-import { addItem } from "../redux/reducers/cartReducer";
-
-const getFilteredList = (products: Product[], search: string) => {
-  return products.filter((product) =>
-    product.title.toLowerCase().includes(search.toLocaleLowerCase())
-  );
-};
+import { addCartItem } from "../redux/reducers/cartReducer";
 
 const ProductsPage = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.productsReducer.products);
-  const currentPage = useAppSelector(
-    (state) => state.productsReducer.currentPage
-  );
   const [search, setSearch] = useState<string>("");
-  const filterProducts = getFilteredList(products, search);
+  const debouncedSearch = useDebounce<string>(search, 500);
+  const filterProducts = getFilteredList(products, debouncedSearch);
+  const [page, setPage] = useState(1);
+  const limit = 5;
+  const filteredProducts = products.slice((page - 1) * limit, page * limit);
+
   useEffect(() => {
-    dispatch(fetchAllProducts(currentPage));
+    dispatch(fetchAllProducts());
   }, []);
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value); // TODO: create debounse for search, store it inte custom hooks!
+    setSearch(e.target.value);
   };
   const handleAddToCart = (product: Product) => {
-    dispatch(addItem(product));
+    dispatch(addCartItem(product));
   };
+  useEffect(() => {
+    setPage(1);
+  }, [products]);
   const handleNextPage = () => {
-    dispatch(fetchAllProducts(currentPage + 1));
-    dispatch(setCurrentPage(currentPage + 1));
+    setPage(page + 1);
   };
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      dispatch(fetchAllProducts(currentPage - 1));
-      dispatch(setCurrentPage(currentPage - 1));
+    if (page > 1) {
+      setPage(page - 1);
     }
   };
-
+  
   return (
     <div>
-      ProdyctPage
+      This is ProductsPage
       <div>
         <input
           type="text"
@@ -55,6 +51,13 @@ const ProductsPage = () => {
           placeholder="Search"
           onChange={onSearchChange}
         />
+        {search !== "" && filterProducts.length > 0 && (
+          <ul>
+            {filterProducts.map((product) => (
+              <li key={product.id}>{product.title}</li>
+            ))}
+          </ul>
+        )}
       </div>
       <table>
         <thead>
@@ -66,7 +69,7 @@ const ProductsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {filterProducts.map((product) => (
+          {filteredProducts.map((product) => (
             <tr key={product.id}>
               <td>{product.title}</td>
               <td>{product.price}</td>
@@ -85,7 +88,9 @@ const ProductsPage = () => {
           ))}
         </tbody>
       </table>
-      <button onClick={handlePrevPage}>Prev</button>
+      <button onClick={handlePrevPage} disabled={page === 1}>
+        Prev
+      </button>
       <button onClick={handleNextPage}>Next</button>
     </div>
   );

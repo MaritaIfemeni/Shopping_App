@@ -1,16 +1,11 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
 import { closeModal } from "../redux/reducers/modalReducer";
-import { removeItem, clearCart } from "../redux/reducers/cartReducer";
-import { Product } from "../types/Product";
-
-interface ModalProps {
-  children?: ReactNode;
-  isOpen: boolean;
-  toggle: () => void;
-}
+import { deleteCartItem, clearCart } from "../redux/reducers/cartReducer";
+import { ModalProps } from "../types/ModalProps";
+import { CartItem } from "../types/CartItem";
 
 const Cart = (props: ModalProps) => {
   const isOpen = useAppSelector((state) => state.modalReducer.isOpen);
@@ -25,6 +20,9 @@ const Cart = (props: ModalProps) => {
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+  const handleDeleteCartItem = (cartId: string) => {
+    dispatch(deleteCartItem(cartId));
+  };
 
   return (
     <div className="modal-overlay">
@@ -34,10 +32,13 @@ const Cart = (props: ModalProps) => {
           <p>Your shopping cart is empty.</p>
         ) : (
           <ul>
-            {items.map((item: Product) => (
-              <li key={item.id}>
-                <span>{item.title}</span>
-                <span>{item.price}</span>
+            {items.map((item: CartItem) => (
+              <li key={item.cartId}>
+                <p>Product: {item.title}</p>
+                <p>Price: {item.price}</p>
+                <button onClick={() => handleDeleteCartItem(item.cartId)}>
+                  Delete
+                </button>
               </li>
             ))}
             <button onClick={handleClearCart}>Clear</button>

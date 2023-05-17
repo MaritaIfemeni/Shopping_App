@@ -1,40 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import axios from "axios";
 
 import { Product } from "../types/Product";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { addItem } from "../redux/reducers/cartReducer";
+import useAppSelector from "../hooks/useAppSelector";
+import { addCartItem } from "../redux/reducers/cartReducer";
 
 const SingleProductPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product>();
-  const [error, setError] = useState("");
   const dispatch = useAppDispatch();
+  const { products, loading, error } = useAppSelector(
+    (state) => state.productsReducer
+  );
+  const { id } = useParams();
+  const selectedProduct =
+    products && products.find((product: Product) => product.id === Number(id));
+  const [currentProduct, setCurrentProduct] = useState<Product | undefined>(
+    selectedProduct
+  );
   useEffect(() => {
-    axios
-      .get(`https://api.escuelajs.co/api/v1/products/${id}`)
-      .then((response) => {
-        setProduct(response.data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, [id]);
-  if (!product) {
-    return <p>Loading...</p>;
-  }
-  if (error) {
-    return <p>{error}</p>;
-  }
-
-  const handleAddToCart = (product: Product) => {
-    dispatch(addItem(product));
+    if (selectedProduct) {
+      setCurrentProduct(selectedProduct);
+      localStorage.setItem("currentProduct", JSON.stringify(selectedProduct));
+    }
+  }, []);
+  useEffect(() => {
+    setCurrentProduct(
+      JSON.parse(localStorage.getItem("currentProduct") || "{}")
+    );
+  }, []);
+  const handleAddToCart = (product: Product | undefined) => {
+    if (product) {
+      dispatch(addCartItem(product));
+    }
   };
 
   return (
     <div>
-      SingeleProductPage
+      This is SingeleProductPage
       <table>
         <thead>
           <tr>
@@ -46,10 +48,10 @@ const SingleProductPage = () => {
         </thead>
         <tbody>
           <tr>
-            <td>{product.title}</td>
-            <td>{product.price}</td>
-            <td>{product.description}</td>
-            <button onClick={() => handleAddToCart(product)}>
+            <td>{currentProduct?.title}</td>
+            <td>{currentProduct?.price}</td>
+            <td>{currentProduct?.description}</td>
+            <button onClick={() => handleAddToCart(currentProduct)}>
               Add to cart
             </button>
           </tr>
