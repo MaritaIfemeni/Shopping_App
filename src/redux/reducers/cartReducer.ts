@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Product } from "../../types/Product";
 import { CartItem } from "../../types/CartItem";
 import { CartType } from "../../types/CartType";
+import { get } from "http";
 
 const initialState: CartType = {
   items: [],
@@ -17,6 +18,8 @@ const cartSlice = createSlice({
   reducers: {
     addCartItem: (state, action: PayloadAction<Product>) => {
       const newItem = action.payload;
+      console.log(state.items.slice());
+      state.items.valueOf();
       const existingItem = state.items.find((item) => item.id === newItem.id);
       if (existingItem) {
         existingItem.total += 1;
@@ -33,6 +36,27 @@ const cartSlice = createSlice({
       state.totalProducts += 1;
       state.totalSum += newItem.price;
     },
+    addMoreOneItem: (state, action: PayloadAction<string>) => {
+      const cartId = action.payload;
+      console.log(state.items);
+      const existingItem = state.items.find((item) => item.cartId === cartId);
+      if (existingItem) {
+        existingItem.total += 1;
+        existingItem.sum = existingItem.total * existingItem.price;
+        state.totalProducts += 1;
+        state.totalSum += existingItem.price;
+      }
+    },
+    decreaseOneItem: (state, action: PayloadAction<string>) => {
+      const cartId = action.payload;
+      const existingItem = state.items.find((item) => item.cartId === cartId);
+      if (existingItem) {
+        existingItem.total -= 1;
+        existingItem.sum = existingItem.total * existingItem.price;
+        state.totalProducts -= 1;
+        state.totalSum -= existingItem.price;
+      }
+    },
     deleteCartItem: (state, action: PayloadAction<string>) => {
       const cartId = action.payload;
       const existingItem = state.items.find((item) => item.cartId === cartId);
@@ -48,5 +72,11 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addCartItem, deleteCartItem, clearCart } = cartSlice.actions;
+export const {
+  addCartItem,
+  addMoreOneItem,
+  decreaseOneItem,
+  deleteCartItem,
+  clearCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

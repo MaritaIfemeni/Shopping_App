@@ -17,8 +17,8 @@ main {
 
 .modal-overlay {
   z-index: 9999;
-  width: 20em;
-  height: 20em;
+  width: 90%;
+  height: 90%;
   position: absolute;
   top: 0;
   background: rgba(0, 0, 0, 0.7);

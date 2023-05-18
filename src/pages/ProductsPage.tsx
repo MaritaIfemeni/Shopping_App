@@ -5,7 +5,10 @@ import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
 import useDebounce from "../hooks/useDebounce";
 import getFilteredList from "../hooks/getFilteredList";
-import { fetchAllProducts } from "../redux/reducers/productsReducer";
+import {
+  fetchAllProducts,
+  filterProductsByPrice,
+} from "../redux/reducers/productsReducer";
 import { Product } from "../types/Product";
 import { addCartItem } from "../redux/reducers/cartReducer";
 
@@ -13,6 +16,7 @@ const ProductsPage = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.productsReducer.products);
   const [search, setSearch] = useState<string>("");
+  const [sort, setSort] = useState<number>(0);
   const debouncedSearch = useDebounce<string>(search, 500);
   const filterProducts = getFilteredList(products, debouncedSearch);
   const [page, setPage] = useState(1);
@@ -39,7 +43,10 @@ const ProductsPage = () => {
       setPage(page - 1);
     }
   };
-  
+  const handleFilterByPrice = () => {
+    dispatch(filterProductsByPrice(sort));
+  };
+
   return (
     <div>
       This is ProductsPage
@@ -58,6 +65,13 @@ const ProductsPage = () => {
             ))}
           </ul>
         )}
+      </div>
+      <div>
+        <select value={sort} onChange={(e) => setSort(Number(e.target.value))}>
+          <option value={0}>Low to High</option>
+          <option value={1}>High to Low</option>
+        </select>
+        <button onClick={handleFilterByPrice}>Sort by Price</button>
       </div>
       <table>
         <thead>

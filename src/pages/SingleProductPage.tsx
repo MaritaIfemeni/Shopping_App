@@ -51,12 +51,12 @@ const SingleProductPage = () => {
             <td>{currentProduct?.title}</td>
             <td>{currentProduct?.price}</td>
             <td>{currentProduct?.description}</td>
-            <button onClick={() => handleAddToCart(currentProduct)}>
-              Add to cart
-            </button>
           </tr>
         </tbody>
       </table>
+      <button onClick={() => handleAddToCart(currentProduct)}>
+        Add to cart
+      </button>
     </div>
   );
 };

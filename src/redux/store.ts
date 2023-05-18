@@ -7,13 +7,13 @@ import cartReducer from "./reducers/cartReducer";
 
 const store = configureStore({
   reducer: {
-  productsReducer,
-  modalReducer,
-  cartReducer,
-  //usersReducer,
+    productsReducer,
+    modalReducer,
+    cartReducer,
+    //usersReducer,
   },
 });
 
 export type GlobalState = ReturnType<typeof store.getState>; //typeskript shortcut to get the type of the global state
-export type AppDispatch = typeof store.dispatch; 
+export type AppDispatch = typeof store.dispatch;
 export default store;

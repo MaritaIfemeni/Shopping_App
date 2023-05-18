@@ -3,15 +3,16 @@ import React from "react";
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
 import { closeModal } from "../redux/reducers/modalReducer";
-import { deleteCartItem, clearCart } from "../redux/reducers/cartReducer";
+import { addMoreOneItem, decreaseOneItem, deleteCartItem, clearCart } from "../redux/reducers/cartReducer";
 import { ModalProps } from "../types/ModalProps";
 import { CartItem } from "../types/CartItem";
+import { CartType } from "../types/CartType";
 
 const Cart = (props: ModalProps) => {
-  const isOpen = useAppSelector((state) => state.modalReducer.isOpen);
-  const items = useAppSelector((state) => state.cartReducer.items);
+  const {isOpen} = props;
+  const {items, totalSum, totalProducts} : CartType = useAppSelector((state) => state.cartReducer);
   const dispatch = useAppDispatch();
-  if (!props.isOpen) {
+  if (!isOpen) {
     return null;
   }
   const handleCloseModal = () => {
@@ -23,6 +24,13 @@ const Cart = (props: ModalProps) => {
   const handleDeleteCartItem = (cartId: string) => {
     dispatch(deleteCartItem(cartId));
   };
+  const handleAddMoreOneItem = (cartId: string) => {
+    dispatch(addMoreOneItem(cartId));
+  };
+  const handleDecreaseOneItem = (cartId: string) => {
+    dispatch(decreaseOneItem(cartId));
+  };
+
 
   return (
     <div className="modal-overlay">
@@ -39,8 +47,17 @@ const Cart = (props: ModalProps) => {
                 <button onClick={() => handleDeleteCartItem(item.cartId)}>
                   Delete
                 </button>
+                <button onClick={() => handleAddMoreOneItem(item.cartId)}>
+                  Add more
+                </button>
+                <button onClick={() => handleDecreaseOneItem(item.cartId)}>
+                  Decrease
+                </button>
+                <p>Quantity: {item.total}</p>
               </li>
             ))}
+            <p>Total Products in Cart: {totalProducts} </p>
+            <p>Total Sum of Cart products: {totalSum} </p>
             <button onClick={handleClearCart}>Clear</button>
           </ul>
         )}
