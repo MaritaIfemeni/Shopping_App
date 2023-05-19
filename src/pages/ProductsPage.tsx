@@ -106,6 +106,11 @@ const ProductsPage = () => {
         Prev
       </button>
       <button onClick={handleNextPage}>Next</button>
+      <div>
+        <Link to="/modifyProducts">
+          <button>Modify Product</button>
+        </Link>
+        </div>
     </div>
   );
 };

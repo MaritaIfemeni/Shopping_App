@@ -15,7 +15,6 @@ const registrationSchema = yup.object({
         .required('Password is required')
         .min(8, 'Password must be at least 8 characters long')
         .max(20, 'Password must be less than 20 characters long')
-        // create matches method to a passport regex that it has to contain letters and numbers and special characters, it can be upper or lower case
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,20}$/, 'Password must contain at least one uppercase, one lowercase, one number and one special character'),
     confirm: yup
         .string() 

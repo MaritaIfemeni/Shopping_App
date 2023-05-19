@@ -6,8 +6,8 @@ import SingleProductPage from "../pages/SingleProductPage";
 import PageNotFound from "../pages/PageNotFound";
 import LogInPage from "../pages/LogInPage";
 import ProductsPage from "../pages/ProductsPage";
-import Cart from "../pages/Cart";
-import ProfilePage from "../pages/ProductsPage";
+import ModifyProducts from "../pages/ModifyProducts";
+//import ProfilePage from "../pages/ProductsPage";
 
 
 const routes: any = createBrowserRouter([
@@ -33,6 +33,10 @@ const routes: any = createBrowserRouter([
         {
           path: "/products",
           element: <ProductsPage />,
+        },
+        { 
+          path: "/modifyProducts",
+          element: <ModifyProducts />,
         },
       ],
     },

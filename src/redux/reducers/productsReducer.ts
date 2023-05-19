@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
 import { Product } from "../../types/Product";
+import { NewProduct } from "../../types/NewProduct";
 
 const initialState: {
   products: Product[];
@@ -28,10 +29,29 @@ export const fetchAllProducts = createAsyncThunk(
   }
 );
 
+export const createNewProduct = createAsyncThunk(
+  "products/createProduct",
+  async (product: NewProduct) => {
+    try {
+      const result = await axios.post<Product>(
+        "https://api.escuelajs.co/api/v1/products/",
+        product
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      throw new Error(error.message);
+    }
+  }
+);
+
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
+    cleanUpProductReducer: (state) => {
+      return initialState;
+    },
     filterProductsByPrice: (state, action: PayloadAction<number>) => {
       const sortedProducts = [...state.products].sort((a, b) => {
         if (action.payload === 0) {
@@ -42,12 +62,8 @@ const productsSlice = createSlice({
       });
       state.products = sortedProducts;
     },
-    //TODO: For admin user:
-    // createProduct: (state, action: PayloadAction<Product>) => {
-    //   state.products.push(action.payload);
-    // },
-    // deleteProduct.
   },
+
   extraReducers: (build) => {
     build
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
@@ -63,11 +79,22 @@ const productsSlice = createSlice({
       })
       .addCase(fetchAllProducts.rejected, (state, action) => {
         state.error = "Cannot fetch products";
+      })
+      .addCase(createNewProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createNewProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products.push(action.payload);
+      })
+      .addCase(createNewProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = "Failed to create product";
       });
   },
 });
 
 const productsReducer = productsSlice.reducer;
-export const { filterProductsByPrice } =
+export const { cleanUpProductReducer, filterProductsByPrice } =
   productsSlice.actions;
 export default productsReducer;
