@@ -4,14 +4,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { createNewProduct } from "../redux/reducers/productsReducer";
+import { createNewProduct, deleteProduct } from "../redux/reducers/productsReducer";
 import { NewProduct } from "../types/NewProduct";
-import newProductSchema, { NewProductFormData } from "../validation/newProductSchema";
+import newProductSchema, {
+  NewProductFormData,
+} from "../validation/newProductSchema";
 
 const ModifyProducts = () => {
   //const { register, handleSubmit } = useForm<NewProduct>();
   const dispatch = useAppDispatch();
-  //const products = useAppSelector((state) => state.productsReducer.products);
   const {
     handleSubmit,
     register,
@@ -20,10 +21,27 @@ const ModifyProducts = () => {
     resolver: yupResolver(newProductSchema),
   });
 
+  const createProduct = () => {
+    dispatch(createNewProduct({
+      title: "New Test Product 6 By Marita",
+      price: 10,
+      description: "Test",
+      categoryId: 1,
+      images: ["https://placeimg.com/640/480/any", "https://placeimg.com/640/480/any"]
+    }))
+    console.log("createProduct", createProduct);
+  }
+
+  const deleteProductById = () => {
+    dispatch(deleteProduct(211));
+    console.log("deleteProductById", deleteProductById);
+  }
+
+  
   const onSubmit = (data: NewProductFormData) => {
     const product: NewProduct = {
       ...data,
-      images: data.images ? (data.images as string[]) : [], // Ensure images is an array or default to an empty array
+      images: Array.isArray(data.images) ? data.images : [data.images || ""],
     };
 
     dispatch(createNewProduct(product));
@@ -40,6 +58,8 @@ const ModifyProducts = () => {
   return (
     <div>
       <h3>Add Products</h3>
+      <button onClick={createProduct}>Create Product</button>
+      <button onClick={deleteProductById}>Delete Product</button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="title">Product Name</label>

@@ -110,7 +110,7 @@ const ProductsPage = () => {
         <Link to="/modifyProducts">
           <button>Modify Product</button>
         </Link>
-        </div>
+      </div>
     </div>
   );
 };

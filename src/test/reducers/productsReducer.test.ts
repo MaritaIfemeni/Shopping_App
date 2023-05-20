@@ -2,6 +2,7 @@ import productsReducer, {
   fetchAllProducts,
   createNewProduct,
   cleanUpProductReducer,
+  deleteProduct,
 } from "../../redux/reducers/productsReducer";
 import store from "../shared/store";
 import productServer from "../servers/productServer";
@@ -44,5 +45,17 @@ describe("Testing productsReduser", () => {
     expect(store.getState().productsReducer.error).toBe(
       "Failed to create product"
     );
+  });
+  test("Check if a product is deleted", async () => {
+    // creatae a new product
+    await store.dispatch(createNewProduct(newProduct));
+    // get the id of the new product
+    const id = store.getState().productsReducer.products[0].id;
+    // delete the product
+    await store.dispatch(deleteProduct(id));
+    // check if the product is deleted
+    expect(store.getState().productsReducer.products).toHaveLength(0);
+
+    
   });
 });

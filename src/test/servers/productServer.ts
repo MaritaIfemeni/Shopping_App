@@ -7,6 +7,8 @@ import categories from "../data/categories";
 import { NewProduct } from "../../types/NewProduct";
 
 const productServer = setupServer(
+  
+
   rest.get("https://api.escuelajs.co/api/v1/products", (req, res, ctx) => {
     return res(ctx.json([product1, product2, product3, product4]));
   }),
@@ -52,7 +54,28 @@ const productServer = setupServer(
       }
       return res(ctx.status(201), ctx.json(product));
     }
+  ),
+  rest.delete(
+    "https://api.escuelajs.co/api/v1/products/:id",
+    async (req, res, ctx) => {
+      const { id } = req.params;
+      let products: Product[] = [product1, product2, product3, product4];
+      const product = products.find((p) => p.id === Number(id));
+      if (!product) {
+        return res(
+          ctx.status(404),
+          ctx.json({
+            statusCode: 404,
+            message: "Product not found",
+            error: "Not Found",
+          })
+        );
+      }
+      products = products.filter((p) => p.id !== Number(id));
+      return res(ctx.status(200), ctx.json({ result: true, id: id }));
+    }
   )
 );
+
 
 export default productServer;

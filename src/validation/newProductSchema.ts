@@ -22,10 +22,8 @@ const newProductSchema = yup.object().shape({
     .min(1, "Category must be at least 1")
     .max(100, "Category must be less than 100"),
   images: yup
-  .mixed()
-  .test("is-images-array", "Images must be an array or a string", (value) =>
-    Array.isArray(value) || typeof value === "string"
-    )
+    .array()
+    .of(yup.string().required("Image is required"))
 });
 
 export type NewProductFormData = yup.InferType<typeof newProductSchema>;
