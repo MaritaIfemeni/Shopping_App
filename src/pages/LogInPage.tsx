@@ -1,11 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import useAppSelector from "../hooks/useAppSelector";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { User } from "../types/User";
+import { fetchAllUsers, createNewUser } from "../redux/reducers/userReducer";
 import registrationSchema, {
   RegistrationFormData,
 } from "../validation/registrationSchema";
 
 const LogInPage = () => {
+  const users = useAppSelector((state) => state.usersReducer.users);
+  const dispatch = useAppDispatch();
+
   const {
     handleSubmit,
     register,
@@ -18,9 +26,26 @@ const LogInPage = () => {
     console.log(data);
   };
 
-  // TODO: Apply MUI and Controlled inputs, Login form data/functions
+  const createUser = () => {
+    dispatch(createNewUser({
+      name: "E",
+      email: "E@mail.com",
+      password: "eeee",
+      avatar: "https://placeimg.com/640/480/any"
+    }))
+    console.log("CREATE USER", createUser);
+  }
+
+  useEffect(() => {
+    dispatch(fetchAllUsers());
+  }, []);
+
+  console.log("USERS", users);
+
+
   return (
     <div>
+      <button onClick={createUser}>Create User</button>
       <h2>LogIn</h2>
       <form>
         <div>

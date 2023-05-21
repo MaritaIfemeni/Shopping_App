@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import productsReducer from "../../redux/reducers/productsReducer";
 import modalReducer from "../../redux/reducers/modalReducer";
 import cartReducer from "../../redux/reducers/cartReducer";
+import usersReducer from "../../redux/reducers/userReducer";
 
 const store = configureStore({
   reducer: {
     productsReducer,
     modalReducer,
     cartReducer,
+    usersReducer,
   },
 });
 

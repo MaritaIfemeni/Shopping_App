@@ -7,12 +7,9 @@ import categories from "../data/categories";
 import { NewProduct } from "../../types/NewProduct";
 
 const productServer = setupServer(
-  
-
   rest.get("https://api.escuelajs.co/api/v1/products", (req, res, ctx) => {
     return res(ctx.json([product1, product2, product3, product4]));
   }),
-
   rest.post(
     "https://api.escuelajs.co/api/v1/products/",
     async (req, res, ctx) => {
@@ -76,6 +73,5 @@ const productServer = setupServer(
     }
   )
 );
-
 
 export default productServer;
