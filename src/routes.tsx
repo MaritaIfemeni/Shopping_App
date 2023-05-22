@@ -10,6 +10,7 @@ import ProductsPage from "./pages/ProductsPage";
 import ModifyProducts from "./pages/ModifyProducts";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
+import UserList from "./pages/UserList";
 
 const routes: any = createBrowserRouter([
   {
@@ -33,12 +34,12 @@ const routes: any = createBrowserRouter([
         path: "/profile",
         element: (
           <PrivateRoute
-          isAuthenticated={true}
-          isAdmin={false} 
-          fallbackPath="/login"
-        >
-          <ProfilePage />
-        </PrivateRoute>
+            isAuthenticated={true}
+            isAdmin={false}
+            fallbackPath="/login"
+          >
+            <ProfilePage />
+          </PrivateRoute>
         ),
       },
       {
@@ -54,6 +55,18 @@ const routes: any = createBrowserRouter([
             fallbackPath="/login"
           >
             <ModifyProducts />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/userlist",
+        element: (
+          <PrivateRoute
+            isAuthenticated={true}
+            isAdmin={true}
+            fallbackPath="/login"
+          >
+            <UserList />
           </PrivateRoute>
         ),
       },
