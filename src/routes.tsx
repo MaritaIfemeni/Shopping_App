@@ -11,6 +11,7 @@ import ModifyProducts from "./pages/ModifyProducts";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
 import UserList from "./pages/UserList";
+import RegitsrationForm from "./components/RegitsrationForm";
 
 const routes: any = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const routes: any = createBrowserRouter([
       {
         path: "/products",
         element: <ProductsPage />,
+      },
+      {
+        path: "/register",
+        element: <RegitsrationForm />,
       },
       {
         path: "/modifyproducts",

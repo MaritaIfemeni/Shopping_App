@@ -11,6 +11,7 @@ import { User } from "../../types/User";
 import { UserReducer } from "../../types/UserReducer";
 import { NewUser } from "../../types/NewUser";
 import { UserCredential } from "../../types/UserCredentials";
+import { UpdateUser } from "../../types/UpdateUser";
 
 const initialState: UserReducer = {
   users: [],
@@ -32,7 +33,7 @@ export const fetchAllUsers = createAsyncThunk("fetcAllUsers", async () => {
 });
 
 export const createNewUser = createAsyncThunk(
-  "products/createNewUser",
+  "user/createNewUser",
   async (user: NewUser) => {
     try {
       const result = await axios.post<User>(
@@ -48,7 +49,7 @@ export const createNewUser = createAsyncThunk(
 );
 
 export const authenticate = createAsyncThunk(
-  "authenticate",
+  "user/authenticate",
   async (access_token: string) => {
     try {
       const authentication = await axios.get<User>(
@@ -72,7 +73,7 @@ export const authenticate = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "login",
+  "user/login",
   async ({ email, password }: UserCredential, { dispatch }) => {
     try {
       const result = await axios.post<{ access_token: string }>(
@@ -87,6 +88,22 @@ export const login = createAsyncThunk(
     } catch (e) {
       const error = e as AxiosError;
       return error;
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+  async (user: UpdateUser): Promise<User | AxiosError> => {
+    try {
+      const { data } = await axios.put<User>(
+        `https://api.escuelajs.co/api/v1/users/${user.id}`,
+        user.data
+      );
+      return data;
+    } catch (e) {
+      let error = e as AxiosError;
+      throw new Error(error.message);
     }
   }
 );
@@ -155,6 +172,24 @@ const usersSlice = createSlice({
       })
       .addCase(authenticate.rejected, (state, action) => {
         state.error = "Failed authentication";
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message;
+        } else {
+          const user= action.payload;
+          state.users = state.users.map((item) =>
+            item.id === user.id ? user : item
+          );
+        }
+        state.loading = false;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.error = "Failed to update user";
+        state.loading = false;
       });
   },
 });

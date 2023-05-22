@@ -24,10 +24,7 @@ const Header = () => {
           <Link to="/">Home</Link>
           <Link to="/products">Products</Link>
           <button onClick={toggle}>Cart</button>
-          <Cart isOpen={isOpen} toggle={toggle}>
-            <p>Modal Content</p>
-            <button onClick={toggle}>Close Cart</button>
-          </Cart>
+          <Cart isOpen={isOpen} toggle={toggle}></Cart>
           {currentUser ? (
             <>
               {currentUser.isAdmin && (

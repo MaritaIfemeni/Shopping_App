@@ -86,9 +86,7 @@ const ProductsPage = () => {
         <tbody>
           {filteredProducts.map((product) => (
             <tr key={product.id}>
-              <Link to={`/product/${product.id}`}>
-                <td>{product.title}</td>
-              </Link>
+              <td>{product.title}</td>
               <td>{product.price}</td>
               <td>{product.description}</td>
               <td>
