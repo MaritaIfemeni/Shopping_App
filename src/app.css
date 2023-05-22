@@ -36,4 +36,9 @@ main {
   border-radius: 1rem;
 }
 
+img {
+  max-width: 20%;
+  max-height: 20%;
+}
+
 /*# sourceMappingURL=app.css.map */

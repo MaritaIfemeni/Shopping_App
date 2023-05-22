@@ -59,6 +59,10 @@ export const authenticate = createAsyncThunk(
           },
         }
       );
+
+      const user: User = authentication.data;
+      user.isAdmin = user.role === "admin";
+
       return authentication.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -93,6 +97,9 @@ const usersSlice = createSlice({
   reducers: {
     cleanUpUserReducer: (state) => {
       return initialState;
+    },
+    logout: (state) => {
+      state.currentUser = null;
     },
   },
   extraReducers: (build) => {
@@ -153,5 +160,5 @@ const usersSlice = createSlice({
 });
 
 const usersReducer = usersSlice.reducer;
-export const { cleanUpUserReducer } = usersSlice.actions;
+export const { cleanUpUserReducer, logout } = usersSlice.actions;
 export default usersReducer;

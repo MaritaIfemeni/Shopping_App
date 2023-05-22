@@ -3,14 +3,6 @@ import React, { useState } from "react";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { createNewProduct } from "../redux/reducers/productsReducer";
 
-export interface NewProduct {
-  title: string;
-  description: string;
-  price: number;
-  categoryId: number;
-  images: string[];
-}
-
 const ModifyProducts = () => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
@@ -26,20 +18,8 @@ const ModifyProducts = () => {
     );
   };
 
-  const createProduct = () => {
-    dispatch(createNewProduct({
-      title: "New Test Product 6 By Marita",
-      price: 10,
-      description: "Test",
-      categoryId: 1,
-      images: ["https://placeimg.com/640/480/any", "https://placeimg.com/640/480/any"]
-    }))
-    console.log("createProduct", createProduct);
-  }
-
   return (
     <div>
-      <button onClick={createProduct}>Create Product</button>
       <h2>Create New Product</h2>
       <div>
         <form onSubmit={(e) => handleSubmit(e)}>

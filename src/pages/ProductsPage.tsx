@@ -80,14 +80,22 @@ const ProductsPage = () => {
             <th>Product Price</th>
             <th>Product Description</th>
             <th>Product Image</th>
+            <th>More details</th>
           </tr>
         </thead>
         <tbody>
           {filteredProducts.map((product) => (
             <tr key={product.id}>
-              <td>{product.title}</td>
+              <Link to={`/product/${product.id}`}>
+                <td>{product.title}</td>
+              </Link>
               <td>{product.price}</td>
               <td>{product.description}</td>
+              <td>
+                {product.images.length > 0 && (
+                  <img src={product.images[0]} alt="Product" />
+                )}
+              </td>
               <td>
                 <Link to={`/product/${product.id}`}>
                   <button>details</button>
@@ -106,11 +114,6 @@ const ProductsPage = () => {
         Prev
       </button>
       <button onClick={handleNextPage}>Next</button>
-      <div>
-        <Link to="/modifyProducts">
-          <button>Modify Product</button>
-        </Link>
-      </div>
     </div>
   );
 };
