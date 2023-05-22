@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 
 import { Product } from "../../types/Product";
 import { NewProduct } from "../../types/NewProduct";
-import { c } from "msw/lib/glossary-de6278a9";
+import { UpdateProduct } from "../../types/UpdateProduct";
 
 const initialState: {
   products: Product[];
@@ -41,6 +41,22 @@ export const createNewProduct = createAsyncThunk(
       return result.data;
     } catch (e) {
       const error = e as AxiosError;
+      throw new Error(error.message);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async (product: UpdateProduct): Promise<Product | AxiosError> => {
+    try {
+      const { data } = await axios.put<Product>(
+        `https://api.escuelajs.co/api/v1/products/${product.id}`,
+        product.data
+      );
+      return data;
+    } catch (e) {
+      let error = e as AxiosError;
       throw new Error(error.message);
     }
   }
@@ -126,6 +142,20 @@ const productsSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = "Failed to delete the product";
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message;
+        } else {
+          const product = action.payload;
+          state.products = state.products.map((item) =>
+            item.id === product.id ? product : item
+          );
+        }
+        state.loading = false;
       });
   },
 });

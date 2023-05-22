@@ -11,7 +11,6 @@ import ModifyProducts from "./pages/ModifyProducts";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
 
-
 const routes: any = createBrowserRouter([
   {
     path: "/",
@@ -32,14 +31,22 @@ const routes: any = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: (
+          <PrivateRoute
+          isAuthenticated={true}
+          isAdmin={false} 
+          fallbackPath="/login"
+        >
+          <ProfilePage />
+        </PrivateRoute>
+        ),
       },
       {
         path: "/products",
         element: <ProductsPage />,
       },
       {
-        path: "/modifyProducts",
+        path: "/modifyproducts",
         element: (
           <PrivateRoute
             isAuthenticated={true}

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
 import useAppDispatch from "../hooks/useAppDispatch";
-import { createNewProduct } from "../redux/reducers/productsReducer";
-import DeleteProduct from "../components/DeleteProduct";
-import { UpdateProduct } from "../components/UpdateProduct";
+import { updateProduct } from "../redux/reducers/productsReducer";
 
-const ModifyProducts = () => {
+export const UpdateProduct = () => {
   const dispatch = useAppDispatch();
+  const [updateById, setUpdateById] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -16,18 +15,35 @@ const ModifyProducts = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
-      createNewProduct({ title, description, price, categoryId, images })
+      updateProduct({
+        id: updateById,
+        data: {
+          title,
+          description,
+          price,
+          images,
+        },
+      
+      })
     );
+    console.log("updateProductById", updateById);
   };
 
   return (
     <div>
-      <DeleteProduct />
-      <h2>ModifyProducts</h2>
-      <UpdateProduct />
-      <h2>Create New Product</h2>
+      UpdateProduct
       <div>
         <form onSubmit={(e) => handleSubmit(e)}>
+          <div>
+            <label id="updateById">
+              Give the ID of the product you want to update:
+              <input
+                onChange={(e) => setUpdateById(Number(e.target.value))}
+                name="updateById"
+                value={updateById}
+              />
+            </label>
+          </div>
           <div>
             <label id="title">
               title:
@@ -79,12 +95,10 @@ const ModifyProducts = () => {
             </label>
           </div>
           <div>
-            <button type="submit">Submit</button>
+            <button type="submit">Update product</button>
           </div>
         </form>
       </div>
     </div>
   );
 };
-
-export default ModifyProducts;

@@ -31,9 +31,10 @@ const Header = () => {
           {currentUser ? (
             <>
               {currentUser.isAdmin && (
-                <Link to="/modifyProducts">Modify Products</Link>
+                <Link to="/modifyproducts">Modify Products</Link>
               )}
               <button onClick={handleLogout}>Logout</button>
+              
               <Link to="/profile">Profile</Link>
             </>
           ) : (

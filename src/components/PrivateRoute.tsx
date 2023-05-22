@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import useAppSelector from "../hooks/useAppSelector";
 
 interface RouteProps {
@@ -20,8 +21,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
 }) => {
   const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
   const navigate = useNavigate();
-  if (!currentUser || !currentUser.isAdmin) {
-    navigate("/login");
+  useEffect(() => {
+    if (!isAuthenticated || !currentUser || (isAdmin && !currentUser.isAdmin)) {
+      navigate(fallbackPath);
+    }
+  }, [isAuthenticated, currentUser, isAdmin, fallbackPath, navigate]);
+
+  if (!isAuthenticated || !currentUser || (isAdmin && !currentUser.isAdmin)) {
     return null;
   }
   return <>{children}</>;
