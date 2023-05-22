@@ -34,7 +34,7 @@ export const createNewUser = createAsyncThunk(
   async (user: NewUser) => {
     try {
       const result = await axios.post<User>(
-        "https://api.escuelajs.co/api/v1/products/",
+        "https://api.escuelajs.co/api/v1/users/",
         user
       );
       return result.data;

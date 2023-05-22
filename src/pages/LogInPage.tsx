@@ -28,9 +28,9 @@ const LogInPage = () => {
 
   const createUser = () => {
     dispatch(createNewUser({
-      name: "E",
-      email: "E@mail.com",
-      password: "eeee",
+      name: "F",
+      email: "F@mail.com",
+      password: "ffff",
       avatar: "https://placeimg.com/640/480/any"
     }))
     console.log("CREATE USER", createUser);

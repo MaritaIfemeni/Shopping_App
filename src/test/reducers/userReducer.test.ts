@@ -36,13 +36,11 @@ describe("Testin userReducer", () => {
       user3,
       user4,
     ]);
-    expect(store.getState().productsReducer.loading).toBeFalsy();
-    expect(store.getState().productsReducer.error).toBeFalsy();
+    expect(store.getState().usersReducer.loading).toBeFalsy();
+    expect(store.getState().usersReducer.error).toBe("");
   });
-   test("Check if a new user is created", async () => {
-        await store.dispatch(createNewUser(newUser));
-        console.log(store.getState().usersReducer.users);
-        expect(store.getState().usersReducer.users.length).toBe(1);
-    });
+  test("Check if a new user is created", async () => {
+    await store.dispatch(createNewUser(newUser));
+    expect(store.getState().usersReducer.users.length).toBe(1);
+  });
 });
-
