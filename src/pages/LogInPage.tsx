@@ -10,7 +10,6 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -98,30 +97,5 @@ const LogInPage = () => {
     </ThemeProvider>
   );
 };
-// <div>
-//   <h2>Login</h2>
-//   <div>
-//     <form onSubmit={handleSubmit(onSubmit)}>
-//       <div>
-//         <label htmlFor="login-username">Email</label>
-//         <input type="text" id="login-username" {...register("email")} />
-//       </div>
-//       <div>
-//         <label htmlFor="login-password">Password</label>
-//         <input
-//           type="password"
-//           id="login-password"
-//           {...register("password")}
-//         />
-//       </div>
-//       <button type="submit">Login</button>
-//     </form>
-//   </div>
-//   <h3>Or great new account below: </h3>
-//   <RegitsrationForm />
-// </div>
-
-//   );
-// };
 
 export default LogInPage;
