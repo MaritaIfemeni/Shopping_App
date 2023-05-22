@@ -1,38 +1,64 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+
 import useAppDispatch from "../hooks/useAppDispatch";
 import { createNewUser } from "../redux/reducers/userReducer";
-import { NewUser } from "../types/NewUser"; 
 
-const RegistrationForm = () => {
+const RegitsrationForm = () => {
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm<NewUser>();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState("");
 
-  const onSubmit = (data: NewUser) => {
-    dispatch(createNewUser(data));
-    console.log("CREATE USER", data);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(createNewUser({ name, email, password, avatar }));
   };
 
   return (
     <div>
       <h2>Registration form:</h2>
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div>
-            <label htmlFor="name">Name:</label>
-            <input {...register("name")} id="name" />
+          <label id="name">
+            name:
+            <input
+              onChange={(e) => setName(e.target.value)}
+              name="name"
+              value={name}
+            />
+          </label>
           </div>
           <div>
-            <label htmlFor="email">Email:</label>
-            <input {...register("email")} id="email" />
+          <label id="email">
+            email:
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              value={email}
+            />
+          </label>
           </div>
           <div>
-            <label htmlFor="password">Password:</label>
-            <input {...register("password")} id="password" />
+          <label id="password">
+            password:
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              value={password}
+            />
+          </label>
           </div>
           <div>
-            <label htmlFor="avatar">Avatar:</label>
-            <input {...register("avatar")} id="avatar" />
+          <label id="avatar">
+            avatar:
+            <input
+              onChange={(e) => setAvatar(e.target.value)}
+              name="avatar"
+              value={avatar}
+            />
+          </label>
           </div>
 
           <button type="submit">Submit</button>
@@ -42,4 +68,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default RegitsrationForm;

@@ -1,25 +1,30 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useState } from "react";
 
-import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { createNewProduct, deleteProduct } from "../redux/reducers/productsReducer";
-import { NewProduct } from "../types/NewProduct";
-import newProductSchema, {
-  NewProductFormData,
-} from "../validation/newProductSchema";
+import { createNewProduct } from "../redux/reducers/productsReducer";
+
+export interface NewProduct {
+  title: string;
+  description: string;
+  price: number;
+  categoryId: number;
+  images: string[];
+}
 
 const ModifyProducts = () => {
-  //const { register, handleSubmit } = useForm<NewProduct>();
   const dispatch = useAppDispatch();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<NewProductFormData>({
-    resolver: yupResolver(newProductSchema),
-  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [categoryId, setCategoryId] = useState(0);
+  const [images, setImages] = useState<string[]>([]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(
+      createNewProduct({ title, description, price, categoryId, images })
+    );
+  };
 
   const createProduct = () => {
     dispatch(createNewProduct({
@@ -32,82 +37,67 @@ const ModifyProducts = () => {
     console.log("createProduct", createProduct);
   }
 
-  const deleteProductById = () => {
-    dispatch(deleteProduct(211));
-    console.log("deleteProductById", deleteProductById);
-  }
-
-  
-  const onSubmit = (data: NewProductFormData) => {
-    const product: NewProduct = {
-      ...data,
-      images: Array.isArray(data.images) ? data.images : [data.images || ""],
-    };
-
-    dispatch(createNewProduct(product));
-    console.log(data);
-    console.log(
-      typeof data.images,
-      typeof data.categoryId,
-      typeof data.price,
-      typeof data.title,
-      typeof data.description
-    );
-  };
-
   return (
     <div>
-      <h3>Add Products</h3>
       <button onClick={createProduct}>Create Product</button>
-      <button onClick={deleteProductById}>Delete Product</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="title">Product Name</label>
-          <input {...register("title")} type="text" title="title" id="title" />
-        </div>
-        <p>{errors.title?.message}</p>
-        <div>
-          <label htmlFor="price">Price</label>
-          <input
-            {...register("price")}
-            type="number"
-            title="price"
-            id="price"
-          />
-          <p>{errors.price?.message}</p>
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <input
-            {...register("description")}
-            type="text"
-            title="description"
-            id="description"
-          />
-          <p>{errors.description?.message}</p>
-        </div>
-        <div>
-          <label htmlFor="images">Images</label>
-          <input
-            {...register("images")}
-            type="text"
-            id="images"
-            name="images"
-          />
-          <p>{errors.images?.message}</p>
-        </div>
-        <div>
-          <label htmlFor="categoryId">Category</label>
-          <input
-            {...register("categoryId")}
-            type="text"
-            title="categoryId"
-            id="categoryId"
-          />
-        </div>
-        <p>{errors.categoryId?.message}</p>
-        <button type="submit">Add Product</button>
-      </form>
+      <h2>Create New Product</h2>
+      <div>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <div>
+            <label id="title">
+              title:
+              <input
+                onChange={(e) => setTitle(e.target.value)}
+                name="title"
+                value={title}
+              />
+            </label>
+          </div>
+          <div>
+            <label id="description">
+              description:
+              <input
+                onChange={(e) => setDescription(e.target.value)}
+                name="description"
+                value={description}
+              />
+            </label>
+          </div>
+          <div>
+            <label id="price">
+              price:
+              <input
+                onChange={(e) => setPrice(Number(e.target.value))}
+                name="price"
+                value={price}
+              />
+            </label>
+          </div>
+          <div>
+            <label id="categoryId">
+              categoryId:
+              <input
+                onChange={(e) => setCategoryId(Number(e.target.value))}
+                name="categoryId"
+                value={categoryId}
+              />
+            </label>
+          </div>
+          <div>
+            <label id="images">
+              images:
+              <input
+                onChange={(e) => setImages(e.target.value.split(","))}
+                name="images"
+                value={images}
+              />
+            </label>
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
