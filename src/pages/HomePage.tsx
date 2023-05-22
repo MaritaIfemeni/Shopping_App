@@ -1,10 +1,12 @@
 import React from "react";
+import useAppSelector from "../hooks/useAppSelector";
 import { Link, useLocation, Outlet } from "react-router-dom";
 
 import Cart from "./Cart";
 import useModal from "../hooks/useModal";
 
 const HomePage = () => {
+  const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
   const location = useLocation();
   const isProductsPage = location.pathname.includes("/products");
   const isLoginPage = location.pathname.includes("/login");
@@ -26,9 +28,12 @@ const HomePage = () => {
           </nav>
         </header>
         <main>
+
+     
           {!isProductsPage && !isLoginPage && (
             <div>
               <h1>Welcome to MI E-Shop</h1>
+              {currentUser && <p>Logged in as {currentUser.name}</p>}
               <p> This is homepage of MI E-Shop</p>
             </div>
           )}

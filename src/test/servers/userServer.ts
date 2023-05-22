@@ -9,23 +9,38 @@ const userServer = setupServer(
     return res(ctx.json([user1, user2, user3, user4]));
   }),
   rest.post("https://api.escuelajs.co/api/v1/users/", async (req, res, ctx) => {
-    const newUser = await req.json() as User
-    const error: string[] = []
+    const newUser = (await req.json()) as User;
+    const error: string[] = [];
     if (error.length > 0) {
-        return res(
-            ctx.status(500),
-            ctx.json({
-                statusCode: 500,
-                message: error,
-                error: "Bad Request"
-            })
-        )
+      return res(
+        ctx.status(500),
+        ctx.json({
+          statusCode: 500,
+          message: error,
+          error: "Bad Request",
+        })
+      );
     }
-    return res(
-        ctx.status(201),
-        ctx.json(newUser)
-    )
-})
+    return res(ctx.status(201), ctx.json(newUser));
+  }),
+  rest.get(
+    "https://api.escuelajs.co/api/v1/auth/login",
+    async (req, res, ctx) => {
+      const { email, password } = req.body as User;
+      const error: string[] = [];
+      if (error.length > 0) {
+        return res(
+          ctx.status(500),
+          ctx.json({
+            statusCode: 500,
+            message: error,
+            error: "Bad Request",
+          })
+        );
+      }
+      return res(ctx.status(201), ctx.json({}));
+    }
+  )
 );
 
 export default userServer;

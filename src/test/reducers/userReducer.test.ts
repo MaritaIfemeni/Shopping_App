@@ -2,8 +2,8 @@ import usersReducer, {
   cleanUpUserReducer,
   createNewUser,
   fetchAllUsers,
+  login,
 } from "../../redux/reducers/userReducer";
-import { User } from "../../types/User";
 import { newUser, user1, user2, user3, user4 } from "../data/users";
 import userServer from "../servers/userServer";
 import store from "../shared/store";
@@ -42,5 +42,14 @@ describe("Testin userReducer", () => {
   test("Check if a new user is created", async () => {
     await store.dispatch(createNewUser(newUser));
     expect(store.getState().usersReducer.users.length).toBe(1);
+  });
+  test("Check if existing user can login", async () => {
+    await store.dispatch(
+      login({
+        email: "john@mail.com",
+        password: "changeme",
+      })
+    );
+    expect(store.getState().usersReducer.currentUser).toBeDefined();
   });
 });
