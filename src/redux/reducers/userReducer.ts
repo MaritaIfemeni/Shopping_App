@@ -92,6 +92,32 @@ export const login = createAsyncThunk(
   }
 );
 
+export const checkStoredToken = createAsyncThunk(
+  "user/checkStoredToken",
+  async (_, { dispatch }) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const authentication = await dispatch(authenticate(token));
+        return authentication.payload as User;
+      }
+
+      return null;
+    } catch (e) {
+      const error = e as AxiosError;
+      return error;
+    }
+  }
+);
+
+export const logoutToken = createAsyncThunk(
+  "user/logout",
+  async (_, { dispatch }) => {
+    localStorage.removeItem("token");
+    await dispatch(checkStoredToken());
+  }
+);
+
 export const updateUser = createAsyncThunk(
   "users/updateUser",
   async (user: UpdateUser): Promise<User | AxiosError> => {
@@ -114,9 +140,6 @@ const usersSlice = createSlice({
   reducers: {
     cleanUpUserReducer: (state) => {
       return initialState;
-    },
-    logout: (state) => {
-      state.currentUser = null;
     },
   },
   extraReducers: (build) => {
@@ -180,7 +203,7 @@ const usersSlice = createSlice({
         if (action.payload instanceof AxiosError) {
           state.error = action.payload.message;
         } else {
-          const user= action.payload;
+          const user = action.payload;
           state.users = state.users.map((item) =>
             item.id === user.id ? user : item
           );
@@ -190,10 +213,27 @@ const usersSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.error = "Failed to update user";
         state.loading = false;
+      })
+      .addCase(checkStoredToken.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message;
+          state.currentUser = null;
+        } else {
+          state.currentUser = action.payload;
+        }
+        state.loading = false;
+      })
+      .addCase(checkStoredToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(checkStoredToken.rejected, (state, action) => {
+        state.error = "Failed to check stored token";
+        state.currentUser = null;
+        state.loading = false;
       });
   },
 });
 
 const usersReducer = usersSlice.reducer;
-export const { cleanUpUserReducer, logout } = usersSlice.actions;
+export const { cleanUpUserReducer } = usersSlice.actions;
 export default usersReducer;

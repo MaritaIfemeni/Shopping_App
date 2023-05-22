@@ -5,7 +5,8 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import Cart from "../pages/Cart";
 import useModal from "../hooks/useModal";
-import { logout } from "../redux/reducers/userReducer";
+import { logoutToken } from "../redux/reducers/userReducer";
+ 
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +14,9 @@ const Header = () => {
   const { toggle, isOpen } = useModal();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutToken());
+
+
   };
 
   return (
