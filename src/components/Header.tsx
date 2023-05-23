@@ -47,7 +47,7 @@ const Header = () => {
         >
           MI E-Shop
         </Typography>
-        <Typography sx={{ flexGrow: 3 }}>
+        <Typography sx={{ flexGrow: 25 }}>
           <Button component={Link} to="/products" color="inherit">
             Products
           </Button>
