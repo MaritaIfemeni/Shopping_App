@@ -1,79 +1,60 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  isAnyOf,
+  isRejectedWithValue,
+  isFulfilled,
+} from "@reduxjs/toolkit";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import { Product } from "../../types/Product";
 import { NewProduct } from "../../types/NewProduct";
 import { UpdatedProduct } from "../../types/UpdatedProduct";
+import {
+  fetchAllProductsApi,
+  createNewProductApi,
+  updateProductApi,
+  deleteProductApi,
+} from "../../api/productsApi";
 
-const initialState: {
+interface ProductsState {
   products: Product[];
   loading: boolean;
   error: string;
-} = {
+}
+
+const initialState: ProductsState = {
   products: [],
   loading: false,
   error: "",
 };
 
 export const fetchAllProducts = createAsyncThunk(
-  "fetcAllProducts",
+  "products/fetchAll",
   async () => {
-    try {
-      const result = await axios.get<Product[]>(
-        "https://api.escuelajs.co/api/v1/products/"
-      );
-      return result.data;
-    } catch (e) {
-      const error = e as AxiosError;
-      return error;
-    }
+    return await fetchAllProductsApi();
   }
 );
 
 export const createNewProduct = createAsyncThunk(
-  "products/createProduct",
+  "products/create",
   async (product: NewProduct) => {
-    try {
-      const result = await axios.post<Product>(
-        "https://api.escuelajs.co/api/v1/products/",
-        product
-      );
-      return result.data;
-    } catch (e) {
-      const error = e as AxiosError;
-      throw new Error(error.message);
-    }
+    return await createNewProductApi(product);
   }
 );
 
 export const updateProduct = createAsyncThunk(
-  "products/updateProduct",
-  async (product: UpdatedProduct): Promise<Product | AxiosError> => {
-    try {
-      const { data } = await axios.put<Product>(
-        `https://api.escuelajs.co/api/v1/products/${product.id}`,
-        product.data
-      );
-      return data;
-    } catch (e) {
-      let error = e as AxiosError;
-      throw new Error(error.message);
-    }
+  "products/update",
+  async (product: UpdatedProduct) => {
+    return await updateProductApi(product);
   }
 );
 
 export const deleteProduct = createAsyncThunk(
-  "products/deleteProduct",
-  async (id: number): Promise<{ result: boolean; id: number } | AxiosError> => {
-    try {
-      const { data } = await axios.delete(
-        `https://api.escuelajs.co/api/v1/products/${id}`
-      );
-      return { result: data, id: id };
-    } catch (e) {
-      const error = e as AxiosError;
-      throw new Error(error.message);
-    }
+  "products/delete",
+  async (id: number) => {
+    return await deleteProductApi(id);
   }
 );
 
@@ -95,58 +76,60 @@ const productsSlice = createSlice({
       state.products = sortedProducts;
     },
   },
-
   extraReducers: (build) => {
     build
-      .addCase(fetchAllProducts.fulfilled, (state, action) => {
+      .addMatcher(
+        isAnyOf(
+          fetchAllProducts.pending,
+          createNewProduct.pending,
+          deleteProduct.pending,
+          updateProduct.pending
+        ),
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(isFulfilled(fetchAllProducts), (state, action) => {
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addMatcher(isFulfilled(createNewProduct), (state, action) => {
         if (action.payload instanceof AxiosError) {
           state.error = action.payload.message;
         } else {
-          state.products = action.payload;
+          state.products.push(action.payload);
         }
         state.loading = false;
       })
-      .addCase(fetchAllProducts.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(fetchAllProducts.rejected, (state, action) => {
-        state.error = "Failed fetch products";
-      })
-      .addCase(createNewProduct.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(createNewProduct.fulfilled, (state, action) => {
+      .addMatcher(
+        isAnyOf(
+          fetchAllProducts.rejected,
+          createNewProduct.rejected,
+          deleteProduct.rejected
+        ),
+        (state, action) => {
+          state.loading = false;
+          state.error =
+            action.error.message ?? "Failed to perform the operation";
+        }
+      )
+      .addMatcher(isRejectedWithValue(deleteProduct), (state, action) => {
         state.loading = false;
-        state.products.push(action.payload);
       })
-      .addCase(createNewProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = "Failed to create product";
-      })
-      .addCase(deleteProduct.fulfilled, (state, action) => {
-        if (action.payload instanceof AxiosError) {
-          state.error = action.payload.message;
+      .addMatcher(isFulfilled(deleteProduct), (state, action) => {
+        if (action.payload.result) {
+          state.products = state.products.filter(
+            (item) => item.id !== action.payload.id
+          );
         } else {
-          const { result, id } = action.payload;
-          if (result) {
-            state.products = state.products.filter((item) => item.id !== id);
-          } else {
-            state.error = "Failed to delete the product";
-          }
+          state.error = "Failed to delete the product";
         }
         state.loading = false;
       })
-      .addCase(deleteProduct.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(deleteProduct.rejected, (state, action) => {
+      .addMatcher(isRejectedWithValue(updateProduct), (state, action) => {
         state.loading = false;
-        state.error = "Failed to delete the product";
       })
-      .addCase(updateProduct.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateProduct.fulfilled, (state, action) => {
+      .addMatcher(isFulfilled(updateProduct), (state, action) => {
         if (action.payload instanceof AxiosError) {
           state.error = action.payload.message;
         } else {

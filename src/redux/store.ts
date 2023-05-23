@@ -4,7 +4,10 @@ import productsReducer from "./reducers/productsReducer";
 import modalReducer from "./reducers/modalReducer";
 import cartReducer from "./reducers/cartReducer";
 import usersReducer from "./reducers/userReducer";
-import { saveCartStateToLocalStorage, loadCartStateFromLocalStorage } from "../utils/localStorageUtils";
+import {
+  saveCartStateToLocalStorage,
+  loadCartStateFromLocalStorage,
+} from "../utils/localStorageUtils";
 
 const persistedCartState = loadCartStateFromLocalStorage();
 

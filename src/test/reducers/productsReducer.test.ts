@@ -42,7 +42,7 @@ describe("Testing productsReduser", () => {
     await store.dispatch(createNewProduct(invalidProduct));
     expect(store.getState().productsReducer.products.length).toBe(0);
     expect(store.getState().productsReducer.error).toBe(
-      "Failed to create product"
+      "Request failed with status code 400"
     );
   });
   test("Check if a product is deleted", async () => {
