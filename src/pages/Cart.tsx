@@ -66,7 +66,6 @@ const Cart = (props: ModalProps) => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Shopping cart
           </Typography>
-
           {props.children}
           {items.length === 0 ? (
             <Typography variant="body1">

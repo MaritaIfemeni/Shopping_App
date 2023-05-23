@@ -1,43 +1,12 @@
 body {
   text-align: center;
 }
-
-nav {
-  margin-top: 3em;
-  & :link {
-    padding: 0 1rem;
-  }
-}
-
 main {
   margin: 0 auto;
   max-width: 1200px;
   padding: 1rem;
 }
-
-.modal-overlay {
-  z-index: 9999;
-  width: 90%;
-  height: 90%;
-  position: absolute;
-  top: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-box {
-  display: block;
-  background: white;
-  width: 70%;
-  height: 70%;
-  padding: 1rem;
-  border-radius: 1rem;
-}
-
 img {
-  max-width: 20%;
-  max-height: 20%;
+  max-width: 40%;
+  max-height: 40%;
 }
-

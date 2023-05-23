@@ -1,41 +1,81 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { deleteProduct } from "../redux/reducers/productsReducer";
-
+import { Product } from "../types/Product";
 const DeleteProduct = () => {
   const dispatch = useAppDispatch();
-  const [deleteById, setDeleteById] = useState(0);
+  const { register, handleSubmit } = useForm<Product>();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(deleteProduct(deleteById));
-    console.log("deleteProductById", deleteById);
+  const onSubmit: SubmitHandler<Product> = (data) => {
+    dispatch(deleteProduct(data.id));
   };
 
-
-
   return (
-    <div>
-      DeleteProduct
-  
-      <div>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div>
-            <label id="deleteById">
-              Give the ID of the product you want to delete:
-              <input
-                onChange={(e) => setDeleteById(Number(e.target.value))}
-                name="deleteById"
-                value={deleteById}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <DeleteIcon
+          sx={{
+            m: 0.5,
+            bgcolor: "error.main",
+            minWidth: "15%",
+            height: "2.5em",
+          }}
+        ></DeleteIcon>
+        <Typography component="h1" variant="h5">
+          Delete products
+        </Typography>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 3 }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="product-id"
+                required
+                fullWidth
+                id="id"
+                {...register("id")}
+                name="id"
+                label="Insert ID of the product you want to delete"
+                autoFocus
               />
-            </label>
-          </div>
-            <button type="submit">Delete Product</button>
-        </form>
-      </div>
-    </div>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="error"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Delete Product Permanently
+            </Button>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

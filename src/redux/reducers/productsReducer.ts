@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 
 import { Product } from "../../types/Product";
 import { NewProduct } from "../../types/NewProduct";
-import { UpdateProduct } from "../../types/UpdateProduct";
+import { UpdatedProduct } from "../../types/UpdatedProduct";
 
 const initialState: {
   products: Product[];
@@ -48,7 +48,7 @@ export const createNewProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
-  async (product: UpdateProduct): Promise<Product | AxiosError> => {
+  async (product: UpdatedProduct): Promise<Product | AxiosError> => {
     try {
       const { data } = await axios.put<Product>(
         `https://api.escuelajs.co/api/v1/products/${product.id}`,

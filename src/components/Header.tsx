@@ -1,51 +1,115 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Badge,
+} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import Cart from "../pages/Cart";
 import useModal from "../hooks/useModal";
 import { logoutToken } from "../redux/reducers/userReducer";
- 
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
   const { toggle, isOpen } = useModal();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { totalProducts } = useAppSelector((state) => state.cartReducer);
 
   const handleLogout = () => {
     dispatch(logoutToken());
-
-
+  };
+  const handleMenuOpen = (e: any) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
-    <div>
-      <header>
-        <div>{currentUser && <p>Logged in as {currentUser.name}</p>}</div>
-        <nav className="testi">
-          <Link to="/">Home</Link>
-          <Link to="/products">Products</Link>
-          <button onClick={toggle}>Cart</button>
-          <Cart isOpen={isOpen} toggle={toggle}></Cart>
-          {currentUser ? (
-            <>
-              {currentUser.isAdmin && (
-                <>
-                  <Link to="/modifyproducts">Modify Products</Link>
-                  <Link to="/userlist">User List</Link>
-                </>
-              )}
-              <button onClick={handleLogout}>Logout</button>
-
-              <Link to="/profile">Profile</Link>
-            </>
-          ) : (
-            <Link to="/login">Log In</Link>
-          )}
-        </nav>
-      </header>
-    </div>
+    <AppBar position="static">
+      <Toolbar>
+        <Typography
+          variant="h6"
+          component={Link}
+          to="/"
+          sx={{ flexGrow: 0, textDecoration: "none", color: "inherit" }}
+        >
+          MI E-Shop
+        </Typography>
+        <Typography sx={{ flexGrow: 3 }}>
+          <Button component={Link} to="/products" color="inherit">
+            Products
+          </Button>
+        </Typography>
+        <IconButton color="inherit" onClick={toggle} sx={{ flexGrow: 0.5 }}>
+          <Badge badgeContent={totalProducts} color="error">
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+        <Cart isOpen={isOpen} toggle={toggle} />
+        {currentUser && (
+          <>
+            <Typography variant="subtitle2" sx={{ marginRight: "1rem" }}>
+              Logged in as {currentUser.name}
+            </Typography>
+          </>
+        )}
+        {currentUser ? (
+          <>
+            <IconButton color="inherit" onClick={handleMenuOpen}>
+              <AccountCircleIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              {currentUser.isAdmin && [
+                <MenuItem
+                  component={Link}
+                  to="/modifyproducts"
+                  key="modifyproducts"
+                  onClick={handleMenuClose}
+                >
+                  Modify Products
+                </MenuItem>,
+                <MenuItem
+                  component={Link}
+                  to="/userlist"
+                  key="userlist"
+                  onClick={handleMenuClose}
+                >
+                  User List
+                </MenuItem>,
+              ]}
+              <MenuItem
+                component={Link}
+                to="/profile"
+                onClick={handleMenuClose}
+              >
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <Button component={Link} to="/login" color="inherit">
+            Log In
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

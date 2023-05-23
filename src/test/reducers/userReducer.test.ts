@@ -24,6 +24,7 @@ describe("Testin userReducer", () => {
   test("Should return the initial state", () => {
     expect(usersReducer(undefined, { type: "" })).toEqual({
       users: [],
+      currentUser: null,
       loading: false,
       error: "",
     });

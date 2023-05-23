@@ -1,4 +1,4 @@
-export interface UpdateProduct {
+export interface UpdatedProduct {
   id: number;
   data: {
     title?: string;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
@@ -8,7 +8,8 @@ const UserList = () => {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.usersReducer.users);
 
-  React.useEffect(() => {
+  //This is under construction
+  useEffect(() => {
     dispatch(fetchAllUsers());
   }, []);
 

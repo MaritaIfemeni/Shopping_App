@@ -8,6 +8,7 @@ const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
 
+  //This is under construction
   const handleUpdateUser = () => {
     dispatch(
       updateUser({

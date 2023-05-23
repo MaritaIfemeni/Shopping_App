@@ -12,6 +12,9 @@ import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
 import UserList from "./pages/UserList";
 import RegitsrationForm from "./components/RegitsrationForm";
+import AddNewProduct from "./components/AddNewProduct";
+import DeleteProduct from "./components/DeleteProduct";
+import UpdateProduct from "./components/UpdateProduct";
 
 const routes: any = createBrowserRouter([
   {
