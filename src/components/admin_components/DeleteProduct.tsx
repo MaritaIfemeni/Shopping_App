@@ -11,9 +11,9 @@ import Container from "@mui/material/Container";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import useAppDispatch from "../hooks/useAppDispatch";
-import { deleteProduct } from "../redux/reducers/productsReducer";
-import { Product } from "../types/Product";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { deleteProduct } from "../../redux/reducers/productsReducer";
+import { Product } from "../../types/Product";
 const DeleteProduct = () => {
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<Product>();
