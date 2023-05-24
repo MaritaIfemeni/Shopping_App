@@ -10,71 +10,85 @@ const AddNewProduct = () => {
   const [price, setPrice] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
   const [images, setImages] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(
-      createNewProduct({ title, description, price, categoryId, images })
-    );
+    try {
+      await dispatch(createNewProduct({ title, description, price, categoryId, images }));
+      setSuccessMessage("Product created successfully");
+      setErrorMessage("");
+      setTitle("");
+      setDescription("");
+      setPrice(0);
+      setCategoryId(0);
+      setImages([]);
+    } catch (error) {
+      setSuccessMessage("");
+      setErrorMessage("Failed to create product");
+    }
   };
 
   return (
-    <div>
+    <div className="add-new-product">
       <h2>Create New Product</h2>
-      <div>
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <div className="form-container">
         <form onSubmit={(e) => handleSubmit(e)}>
-          <div>
-            <label id="title">
-              title:
-              <input
-                onChange={(e) => setTitle(e.target.value)}
-                name="title"
-                value={title}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="title">Title:</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
-          <div>
-            <label id="description">
-              description:
-              <input
-                onChange={(e) => setDescription(e.target.value)}
-                name="description"
-                value={description}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
-          <div>
-            <label id="price">
-              price:
-              <input
-                onChange={(e) => setPrice(Number(e.target.value))}
-                name="price"
-                value={price}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+            />
           </div>
-          <div>
-            <label id="categoryId">
-              categoryId:
-              <input
-                onChange={(e) => setCategoryId(Number(e.target.value))}
-                name="categoryId"
-                value={categoryId}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="categoryId">Category ID:</label>
+            <input
+              type="number"
+              id="categoryId"
+              name="categoryId"
+              value={categoryId}
+              onChange={(e) => setCategoryId(Number(e.target.value))}
+            />
           </div>
-          <div>
-            <label id="images">
-              images:
-              <input
-                onChange={(e) => setImages(e.target.value.split(","))}
-                name="images"
-                value={images}
-              />
-            </label>
+          <div className="form-group">
+            <label htmlFor="images">Images:</label>
+            <input
+              type="text"
+              id="images"
+              name="images"
+              value={images.join(",")}
+              onChange={(e) => setImages(e.target.value.split(","))}
+            />
           </div>
-          <div>
-            <button type="submit">Submit</button>
+          <div className="form-group">
+            <button type="submit">Create New Product</button>
           </div>
         </form>
       </div>

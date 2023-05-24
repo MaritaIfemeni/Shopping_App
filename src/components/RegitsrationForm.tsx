@@ -87,7 +87,7 @@ const RegitsrationForm = () => {
                   label="Avatar URL"
                   id="avatar" {...register("avatar")}
                   name="avatar"
-                  autoComplete="new-password"
+                  autoComplete="new-avatar"
                 />
               </Grid>
             </Grid>

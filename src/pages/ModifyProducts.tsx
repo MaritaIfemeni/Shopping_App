@@ -3,10 +3,12 @@ import { Box, IconButton } from "@mui/material";
 import { Home, Delete, Add } from "@mui/icons-material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { Outlet, Link } from "react-router-dom";
+import TestComponent from "./TestComponent";
 
 const ModifyProducts = () => {
   return (
     <Box>
+
       <nav>
       <IconButton
           component={Link}
