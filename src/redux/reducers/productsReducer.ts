@@ -6,7 +6,7 @@ import {
   isRejectedWithValue,
   isFulfilled,
 } from "@reduxjs/toolkit";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 
 import { Product } from "../../types/Product";
 import { NewProduct } from "../../types/NewProduct";
@@ -17,6 +17,7 @@ import {
   updateProductApi,
   deleteProductApi,
 } from "../../api/productsApi";
+
 
 interface ProductsState {
   products: Product[];
@@ -139,7 +140,7 @@ const productsSlice = createSlice({
           );
         }
         state.loading = false;
-      });
+      })
   },
 });
 

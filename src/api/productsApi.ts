@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+
 import { NewProduct } from "../types/NewProduct";
 import { UpdatedProduct } from "../types/UpdatedProduct";
 import { Product } from "../types/Product";
+import { Category } from "../types/Category";
 
 const API_BASE_URL = "https://api.escuelajs.co/api/v1/products/";
 

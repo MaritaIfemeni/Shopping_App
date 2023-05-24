@@ -17,6 +17,8 @@ import {
   ListItem,
   IconButton,
   Typography,
+  TextField,
+  Autocomplete,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
@@ -29,9 +31,14 @@ import {
   fetchAllProducts,
   filterProductsByPrice,
 } from "../redux/reducers/productsReducer";
+import {
+  fetchCategories,
+  selectCategory,
+  setCategories,
+} from "../redux/reducers/categoryReducer";
 import { Product } from "../types/Product";
 import { addCartItem } from "../redux/reducers/cartReducer";
-import { Height } from "@mui/icons-material";
+import { Category } from "../types/Category";
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
   width: "60%",
@@ -48,14 +55,28 @@ const ProductsPage = () => {
   const [search, setSearch] = useState<string>("");
   const [sort, setSort] = useState<number>(0);
   const debouncedSearch = useDebounce<string>(search, 500);
-  const filterProducts = getFilteredList(products, search);
+  const filterProducts = getFilteredList(products, debouncedSearch);
   const [page, setPage] = useState(1);
   const limit = 5;
-  const filteredProducts = products.slice((page - 1) * limit, page * limit);
+  const filteredProducts = useAppSelector((state) => {
+    if (state.categoriesReducer.selectedCategory === null) {
+      return products.slice((page - 1) * limit, page * limit);
+    } else {
+      const categoryId = state.categoriesReducer.selectedCategory.id;
+      return products.filter((product) => product.category.id === categoryId);
+    }
+  });
+  const [category, setCategory] = useState<Category | null>(null);
+  const { categories, selectedCategory } = useAppSelector(
+    (state) => state.categoriesReducer
+  );
 
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, []);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
   useEffect(() => {
     setPage(1);
   }, [products]);
@@ -75,6 +96,9 @@ const ProductsPage = () => {
   };
   const handleFilterByPrice = () => {
     dispatch(filterProductsByPrice(sort));
+  };
+  const handleCategoryChange = (categoryId: number) => {
+    dispatch(selectCategory(categoryId));
   };
 
   return (
@@ -103,6 +127,18 @@ const ProductsPage = () => {
         </List>
       )}
       <Typography variant="h5" sx={{ margin: "0 0 1em 1em" }}>
+        <Select
+          value={selectedCategory ? selectedCategory.id : 0}
+          onChange={(e) => handleCategoryChange(Number(e.target.value))}
+          sx={{ minWidth: "15%", height: "2.5em", marginRight: "1em" }}
+        >
+          <MenuItem value={0}>All Categories</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.id}>
+              {category.name}
+            </MenuItem>
+          ))}
+        </Select>
         <Select
           value={sort}
           onChange={(e) => setSort(Number(e.target.value))}
