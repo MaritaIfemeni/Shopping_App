@@ -30,7 +30,7 @@ const UpdateProduct = () => {
 
   return (
     <div>
-      UpdateProduct
+      <h2>UpdateProduct</h2>
       <div>
         <form onSubmit={(e) => handleSubmit(e)}>
           <div>
