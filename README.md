@@ -1,53 +1,160 @@
 # Front-end Project
- ![Emoji](https://img.shields.io/badge/in--progress-YES-red)
-    ![Emoji](https://img.shields.io/badge/author-MI-blue)
+![Emoji](https://img.shields.io/badge/in--progress-YES-red)
+![Emoji](https://img.shields.io/badge/author-MI-blue)
 
 ![React](https://img.shields.io/badge/React-v.18-blue)
 ![Redux toolkit](https://img.shields.io/badge/RTK-v.1-purple)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v.4-green)
 ![SASS](https://img.shields.io/badge/SASS-v.1-hotpink)
+![Material UI](https://img.shields.io/badge/MUI-v.5-blueviolet)
 
-This project requires implementation of TypeScript and SASS.
+## Frontend Assignment using react, redux toolkit, typescript and sass
 
-## Requirement
+The purpose of this assignment was to create online store fetching data from API: https://fakeapi.platzi.com/en/rest/introduction
 
-1. Use the API endpoint [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/) to create an e-commerce website. Read the documentation and learn how to use the different endpoints.
-2. Create at lease 4 pages (can be more if you want): Home page, product page,
-profile page (only available if user logins), and cart page (cart could be a page or a modal)
-3. Create Redux store for following features:
-    - product reducer: get all products, find a single products, sort products by
-    categories, sort products by price. Create, update and delete a product (enable update & delete features only for admin of the webapp. For example, you can check if user is your admin account before let them delete product)
-    - user reducer: Register and Login
-    - cart reducer: add product to cart, remove products, update products's quantity in cart
-4. When adding routers to your application, programatically set certain routes to be private. For example, route to user profile page should not be accessible if user has not logged in.
-5. Deploy the application and rewrite README file.
+## Table of contents
 
-## Bonus
+- [Issues](#issues)
+- [Missing functionalities](#missing-functionalities)
+- [Unfinished tasks](#unfinished-tasks)
+- [Deployment](#deployment)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
 
-1. Use context API to switch theme
-2. Implement unit testing for the reducers
+#### Missing functionalities
 
-## Instruction to start the project
+- Not able to add actual image file when creating new user or product, only URL is possible to add. 
+- Not able to update user details.
+- No Checkout feature done.
+- Does not give any alerts or notifications when something is done successfully or if something went wrong, like adding new user or product.
+- Indications that app is loading when fetching data from API has not been done.
+- Validation for forms has not been done.
 
-In the project directory, you can run:
+#### Unfinished tasks
 
-### `npm install`
+- Refactoring the code:
+    - userReducer has not been refactored.
+    - MUI style is in the coponents and there is lots of inline styling.
+- Using react-hook-froms for creating product or updating has not been done neither the validation. 
+- Test are not complite and no test for the UI has been done.
+ 
+#### Issues to fix in the App
 
-Install all the dependencies
+- When user, either admin or customer, is logged in and is in a page which has private routing (like profile page), after refresh it will redirect back to login page.
+- AppBar is not behaving right when the loggin in is happening and gives an error in browser console. Funcionality is not affected.
+- Test for delete product is not working (stopped working after some refactoring).
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Deployment
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Checkout the project from **[here]()**.  TODO
 
-### `npm test`
+## Getting started
 
-Launches the test runner in the interactive watch mode
+1. To clone repository use: git clone 
+2. To install the project run: npm install
+3. Refer to package.json for scripts 
+4. To run application in development mode run: npm start 
+5. To run tests run: npm test
+6. To build application for production: npm run build
 
-### `npm run build`
+## Project structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+.
+├── README.md
+├── node_modules
+├── package-lock.json
+├── package.json
+├── public
+├── src
+    ├── App.tsx
+    ├── api
+    │   ├── categoriesApi.ts
+    │   ├── productsApi.ts
+    │   └── userApi.ts
+    ├── app.css
+    ├── app.css.map
+    ├── components
+    │   ├── Footer.tsx
+    │   ├── Header.tsx
+    │   ├── RegitsrationForm.tsx
+    │   └── admin_components
+    │       ├── AddNewProduct.tsx
+    │       ├── AdminProductDashboard.tsx
+    │       ├── DeleteProduct.tsx
+    │       └── UpdateProduct.tsx
+    ├── hooks
+    │   ├── getFilteredList.ts
+    │   ├── useAppDispatch.ts
+    │   ├── useAppSelector.ts
+    │   ├── useDebounce.ts
+    │   └── useModal.ts
+    ├── img
+    │   └── shopping.jpeg
+    ├── index.css
+    ├── index.tsx
+    ├── pages
+    │   ├── Cart.tsx
+    │   ├── HomePage.tsx
+    │   ├── LandingPage.tsx
+    │   ├── LogInPage.tsx
+    │   ├── ModifyProducts.tsx
+    │   ├── PageNotFound.tsx
+    │   ├── ProductsPage.tsx
+    │   ├── ProfilePage.tsx
+    │   ├── SingleProductPage.tsx
+    │   └── UserList.tsx
+    ├── react-app-env.d.ts
+    ├── redux
+    │   ├── reducers
+    │   │   ├── cartReducer.ts
+    │   │   ├── categoryReducer.ts
+    │   │   ├── modalReducer.ts
+    │   │   ├── productsReducer.ts
+    │   │   └── userReducer.ts
+    │   └── store.ts
+    ├── reportWebVitals.ts
+    ├── routes
+    │   ├── PrivateRoute.tsx
+    │   └── routes.tsx
+    ├── setupTests.ts
+    ├── styles
+    │   └── app.scss
+    ├── test
+    │   ├── data
+    │   │   ├── categories.ts
+    │   │   ├── products.ts
+    │   │   └── users.ts
+    │   ├── reducers
+    │   │   ├── cartReduser.test.ts
+    │   │   ├── categories.test.ts
+    │   │   ├── modalReducer.test.ts
+    │   │   ├── productsReducer.test.ts
+    │   │   └── userReducer.test.ts
+    │   ├── servers
+    │   │   ├── categoriesServer.ts
+    │   │   ├── productServer.ts
+    │   │   └── userServer.ts
+    │   └── shared
+    │       └── store.ts
+    ├── types
+    │   ├── AdminUser.ts
+    │   ├── CartItem.ts
+    │   ├── CartType.ts
+    │   ├── Category.ts
+    │   ├── ModalProps.ts
+    │   ├── NewProduct.ts
+    │   ├── NewUser.ts
+    │   ├── Product.ts
+    │   ├── UpdateUser.ts
+    │   ├── UpdatedProduct.ts
+    │   ├── User.ts
+    │   ├── UserCredentials.ts
+    │   └── UserReducer.ts
+    ├── utils
+    │   └── localStorageUtils.tsx
+    └── validation
+        ├── newProductSchema.ts
+        └── registrationSchema.ts
+└── tsconfig.json
