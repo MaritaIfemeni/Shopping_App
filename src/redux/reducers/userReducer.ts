@@ -118,22 +118,6 @@ export const logoutToken = createAsyncThunk(
   }
 );
 
-export const updateUser = createAsyncThunk(
-  "users/updateUser",
-  async (user: UpdateUser): Promise<User | AxiosError> => {
-    try {
-      const { data } = await axios.put<User>(
-        `https://api.escuelajs.co/api/v1/users/${user.id}`,
-        user.data
-      );
-      return data;
-    } catch (e) {
-      let error = e as AxiosError;
-      throw new Error(error.message);
-    }
-  }
-);
-
 const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -195,24 +179,6 @@ const usersSlice = createSlice({
       })
       .addCase(authenticate.rejected, (state, action) => {
         state.error = "Failed authentication";
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        if (action.payload instanceof AxiosError) {
-          state.error = action.payload.message;
-        } else {
-          const user = action.payload;
-          state.users = state.users.map((item) =>
-            item.id === user.id ? user : item
-          );
-        }
-        state.loading = false;
-      })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.error = "Failed to update user";
-        state.loading = false;
       })
       .addCase(checkStoredToken.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError) {

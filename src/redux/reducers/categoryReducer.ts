@@ -1,12 +1,7 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
-import { c } from 'msw/lib/glossary-de6278a9';
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-}
+import { fetchCategoriesApi } from "../../api/categoriesApi";
+import { Category } from "../../types/Category";
 
 interface CategoryState {
   categories: Category[];
@@ -19,31 +14,28 @@ const initialState: CategoryState = {
 };
 
 export const fetchCategories = createAsyncThunk(
-  'category/fetchCategories',
+  "category/fetchCategories",
   async () => {
-    try {
-      const response = await axios.get<Category[]>(
-        'https://api.escuelajs.co/api/v1/categories'
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    return await fetchCategoriesApi();
   }
 );
 
 const categorySlice = createSlice({
-  name: 'category',
+  name: "category",
   initialState,
   reducers: {
+    cleanUpCategoriesReducer: (state) => {
+      return initialState;
+    },
+
     setCategories: (state, action: PayloadAction<Category[]>) => {
-        state.categories = action.payload;
-      },
-      selectCategory: (state, action: PayloadAction<number>) => {
-        state.selectedCategory = state.categories.find(
-          (category) => category.id === action.payload
-        ) || null;
-      },
+      state.categories = action.payload;
+    },
+    selectCategory: (state, action: PayloadAction<number>) => {
+      state.selectedCategory =
+        state.categories.find((category) => category.id === action.payload) ||
+        null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCategories.fulfilled, (state, action) => {
@@ -53,6 +45,7 @@ const categorySlice = createSlice({
 });
 
 const categoriesReducer = categorySlice.reducer;
-export const { setCategories, selectCategory } = categorySlice.actions;
+export const { setCategories, selectCategory, cleanUpCategoriesReducer } =
+  categorySlice.actions;
 
 export default categoriesReducer;

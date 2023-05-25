@@ -53,4 +53,13 @@ describe("Testin userReducer", () => {
     );
     expect(store.getState().usersReducer.currentUser).toBeDefined();
   });
+  test("Check if non-existing user can login", async () => {
+    await store.dispatch(
+      login({
+        email: "nönönöö@mail.com",
+        password: "changeme",
+      })
+    );
+    expect(store.getState().usersReducer.currentUser).toBe(null);
+  });
 });

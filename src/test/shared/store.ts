@@ -4,6 +4,7 @@ import productsReducer from "../../redux/reducers/productsReducer";
 import modalReducer from "../../redux/reducers/modalReducer";
 import cartReducer from "../../redux/reducers/cartReducer";
 import usersReducer from "../../redux/reducers/userReducer";
+import categoriesReducer from "../../redux/reducers/categoryReducer";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     modalReducer,
     cartReducer,
     usersReducer,
+    categoriesReducer,
   },
 });
 

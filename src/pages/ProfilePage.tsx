@@ -1,5 +1,4 @@
 import React from "react";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -9,7 +8,6 @@ import { deepOrange } from "@mui/material/colors";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { updateUser } from "../redux/reducers/userReducer";
 
 const style = {
   position: "relative" as "relative",
@@ -26,30 +24,20 @@ const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
 
-  //This is under construction
-  const handleUpdateUser = () => {
-    dispatch(
-      updateUser({
-        id: 57,
-        data: {
-          name: "Marita Doe",
-          email: "updated",
-          password: "1234",
-          avatar: "https://api.lorem.space/image/face?w=640&h=480&r=867",
-        },
-      })
-    );
-
-    console.log("updated", updateUser);
-  };
-
   return (
     <Card sx={style}>
       {currentUser && (
-            <Avatar sx={{ margin: "0 0 0 13em", width: 24, height: 24, bgcolor: deepOrange[500] }}>
-              {currentUser.name[0]}
-            </Avatar>
-            )}
+        <Avatar
+          sx={{
+            margin: "0 0 0 13em",
+            width: 24,
+            height: 24,
+            bgcolor: deepOrange[500],
+          }}
+        >
+          {currentUser.name[0]}
+        </Avatar>
+      )}
       <CardActionArea sx={{ display: "flex", alignItems: "center" }}>
         {currentUser && (
           <CardMedia
@@ -74,7 +62,7 @@ const ProfilePage = () => {
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Change Details  {/* This is under construction */}
+          Change Details {/* This is under construction */}
         </Button>
       </CardActions>
     </Card>
