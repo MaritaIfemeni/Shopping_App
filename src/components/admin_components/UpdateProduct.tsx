@@ -53,6 +53,7 @@ const UpdateProduct = () => {
             <input
               type="number"
               name="updateById"
+              id="updateById"
               value={updateById}
               onChange={(e) => setUpdateById(Number(e.target.value))}
             />

@@ -14,7 +14,6 @@ import useAppDispatch from "../../hooks/useAppDispatch";
 import { deleteProduct } from "../../redux/reducers/productsReducer";
 import { Product } from "../../types/Product";
 
-
 const DeleteProduct = () => {
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<Product>();
@@ -54,14 +53,13 @@ const DeleteProduct = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                label="Insert ID of the product you want to delete"
                 autoComplete="product-id"
                 required
                 fullWidth
                 id="id"
                 {...register("id")}
                 name="id"
-                label="Insert ID of the product you want to delete"
-                autoFocus
               />
             </Grid>
             <Button

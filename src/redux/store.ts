@@ -10,7 +10,6 @@ import {
   loadCartStateFromLocalStorage,
 } from "../utils/localStorageUtils";
 
-
 const persistedCartState = loadCartStateFromLocalStorage();
 
 const store = configureStore({
@@ -22,7 +21,7 @@ const store = configureStore({
     categoriesReducer,
   },
   preloadedState: {
-    cartReducer: persistedCartState, // Set the preloaded state for the cartReducer
+    cartReducer: persistedCartState,
   },
 });
 
@@ -31,6 +30,6 @@ store.subscribe(() => {
   saveCartStateToLocalStorage(cartReducer);
 });
 
-export type GlobalState = ReturnType<typeof store.getState>; //typeskript shortcut to get the type of the global state
+export type GlobalState = ReturnType<typeof store.getState>; 
 export type AppDispatch = typeof store.dispatch;
 export default store;

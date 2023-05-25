@@ -18,7 +18,6 @@ import {
   deleteProductApi,
 } from "../../api/productsApi";
 
-
 interface ProductsState {
   products: Product[];
   loading: boolean;
@@ -140,7 +139,7 @@ const productsSlice = createSlice({
           );
         }
         state.loading = false;
-      })
+      });
   },
 });
 

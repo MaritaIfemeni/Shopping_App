@@ -128,6 +128,7 @@ const ProductsPage = () => {
       )}
       <Typography variant="h5" sx={{ margin: "0 0 1em 1em" }}>
         <Select
+          id="category-select"
           value={selectedCategory ? selectedCategory.id : 0}
           onChange={(e) => handleCategoryChange(Number(e.target.value))}
           sx={{ minWidth: "15%", height: "2.5em", marginRight: "1em" }}
