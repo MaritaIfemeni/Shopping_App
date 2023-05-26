@@ -10,7 +10,7 @@
 
 ## Frontend Assignment using react, redux toolkit, typescript and sass
 
-The purpose of this assignment was to create online store fetching data from API: https://fakeapi.platzi.com/en/rest/introduction
+The purpose of this assignment was to create online store fetching data from Platzi Fake Store [API](https://fakeapi.platzi.com/en/rest/)
 
 ## Table of contents
 
@@ -47,14 +47,14 @@ The purpose of this assignment was to create online store fetching data from API
 - When user, either admin or customer, is logged in and is in a page which has private routing (like profile page), after refresh it will redirect back to login page.
 - AppBar is not behaving right when the loggin in is happening and gives an error in browser console. Funcionality is not affected.
 - Test for delete product is not working (stopped working after some refactoring).
+- When creating or updating the product wasn't succsesfull it gives wronglu a message that it was succesfull.
 - Low performance
 
+#### Deployment
 
-## Deployment
+Checkout the project from **[here](https://shopping-app-c37.pages.dev/)**.
 
-Checkout the project from **[here]()**.  TODO
-
-## Getting started
+#### Getting started
 
 1. To clone repository use: git clone 
 2. To install the project run: npm install
