@@ -19,6 +19,11 @@ import {
   Typography,
   TextField,
   Autocomplete,
+  Card,
+  CardMedia,
+  Grid,
+  CardContent,
+  CardActions,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
@@ -57,7 +62,7 @@ const ProductsPage = () => {
   const debouncedSearch = useDebounce<string>(search, 500);
   const filterProducts = getFilteredList(products, debouncedSearch);
   const [page, setPage] = useState(1);
-  const limit = 5;
+  const limit = 6;
   const filteredProducts = useAppSelector((state) => {
     if (state.categoriesReducer.selectedCategory === null) {
       return products.slice((page - 1) * limit, page * limit);
@@ -66,7 +71,6 @@ const ProductsPage = () => {
       return products.filter((product) => product.category.id === categoryId);
     }
   });
-  const [category, setCategory] = useState<Category | null>(null);
   const { categories, selectedCategory } = useAppSelector(
     (state) => state.categoriesReducer
   );
@@ -156,48 +160,41 @@ const ProductsPage = () => {
           <SortIcon sx={{ marginRight: "0.5em" }} /> Sort by Price
         </Button>
       </Typography>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Product Name</TableCell>
-              <TableCell>Product Price</TableCell>
-              <TableCell>Product Description</TableCell>
-              <TableCell>Product Image</TableCell>
-              <TableCell>More details</TableCell>
-              <TableCell>Add to cart</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredProducts.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>{product.title}</TableCell>
-                <TableCell>{product.price} £</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell>
-                  {product.images.length > 0 && (
-                    <img src={product.images[0]} alt="Product" />
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Link to={`/product/${product.id}`}>
-                    <Button variant="outlined">Details</Button>
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    Add to cart
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid container spacing={4}>
+        {filteredProducts.map((product) => (
+          <Grid item key={product.id} xs={12} sm={6} md={4}>
+            <Card
+              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+            >
+              <CardMedia
+                component="div"
+                sx={{
+                  // 16:9
+                  pt: "56.25%",
+                }}
+                image={product.images[0]}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {product.title}
+                </Typography>
+                <Typography gutterBottom variant="h6">
+                  Price: {product.price} £
+                </Typography>
+                <Typography>{product.description}</Typography>
+              </CardContent>
+              <CardActions>
+                <Link to={`/product/${product.id}`}>
+                  <Button size="small">Details</Button>
+                </Link>
+                <Button size="small" onClick={() => handleAddToCart(product)}>
+                  Add to cart
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
       <Button onClick={handlePrevPage} disabled={page === 1}>
         Prev
       </Button>

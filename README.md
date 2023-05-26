@@ -29,20 +29,25 @@ The purpose of this assignment was to create online store fetching data from API
 - Does not give any alerts or notifications when something is done successfully or if something went wrong, like adding new user or product.
 - Indications that app is loading when fetching data from API has not been done.
 - Validation for forms has not been done.
+- No pagination for the products when the category is selected.
 
 #### Unfinished tasks
 
 - Refactoring the code:
     - userReducer has not been refactored.
-    - MUI style is in the coponents and there is lots of inline styling.
+    - MUI styles is in the coponents and there is lots of inline styling.
 - Using react-hook-froms for creating product or updating has not been done neither the validation. 
+- Page is not fully responsive.
+- Arial labels has not been done.
 - Test are not complite and no test for the UI has been done.
+- Optimalization of the code has not been done.
  
 #### Issues to fix in the App
 
 - When user, either admin or customer, is logged in and is in a page which has private routing (like profile page), after refresh it will redirect back to login page.
 - AppBar is not behaving right when the loggin in is happening and gives an error in browser console. Funcionality is not affected.
 - Test for delete product is not working (stopped working after some refactoring).
+- Low performance
 
 
 ## Deployment
