@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,14 +16,20 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { User } from "../types/User";
 import { login } from "../redux/reducers/userReducer";
-import RegitsrationForm from "../components/RegitsrationForm";
+import loginSchema, { LoginFormData } from "../validation/loginSchema";
 
 const LogInPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<User>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema),
+  });
 
-  const onSubmit: SubmitHandler<User> = (data) => {
+  const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     dispatch(login(data));
     navigate("/");
   };
@@ -58,6 +65,8 @@ const LogInPage = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             margin="normal"
@@ -69,6 +78,8 @@ const LogInPage = () => {
             {...register("password")}
             name="password"
             autoComplete="current-password"
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <Button
             type="submit"

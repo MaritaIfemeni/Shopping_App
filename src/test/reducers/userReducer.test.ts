@@ -47,8 +47,8 @@ describe("Testin userReducer", () => {
   test("Check if existing user can login", async () => {
     await store.dispatch(
       login({
-        email: "john@mail.com",
-        password: "changeme",
+        email: "a@mail.com",
+        password: "aaaa",
       })
     );
     expect(store.getState().usersReducer.currentUser).toBeDefined();

@@ -31,6 +31,7 @@ describe("Testing productsReduser", () => {
   });
   test("Check if fetching all products works", async () => {
     await store.dispatch(fetchAllProducts());
+    expect(store.getState().productsReducer.products).toHaveLength(4);
     expect(store.getState().productsReducer.loading).toBeFalsy();
     expect(store.getState().productsReducer.error).toBeFalsy();
   });

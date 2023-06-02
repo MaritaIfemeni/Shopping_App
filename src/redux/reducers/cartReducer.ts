@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Product } from "../../types/Product";
 import { CartItem } from "../../types/CartItem";
 import { CartType } from "../../types/CartType";
-import { get } from "http";
 
 const initialState: CartType = {
   items: [],
