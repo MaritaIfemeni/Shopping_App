@@ -11,41 +11,24 @@ const UpdateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [images, setImages] = useState<string[]>([]);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await dispatch(
-        updateProduct({
-          id: updateById,
-          data: {
-            title,
-            description,
-            price,
-            images,
-          },
-        })
-      );
-      setSuccessMessage("Product updated successfully");
-      setErrorMessage("");
-      setUpdateById(0);
-      setTitle("");
-      setDescription("");
-      setPrice(0);
-      setImages([]);
-    } catch (error) {
-      setSuccessMessage("");
-      setErrorMessage("Failed to update product");
-    }
+    await dispatch(
+      updateProduct({
+        id: updateById,
+        data: {
+          title,
+          description,
+          price,
+          images,
+        },
+      })
+    );
   };
 
   return (
     <div className="add-new-product">
       <h2>UpdateProduct</h2>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="form-container">
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="form-group">

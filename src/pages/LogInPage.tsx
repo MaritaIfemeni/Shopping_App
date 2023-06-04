@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "@mui/material/Avatar";
@@ -19,6 +19,9 @@ import { login } from "../redux/reducers/userReducer";
 import loginSchema, { LoginFormData } from "../validation/loginSchema";
 
 const LogInPage = () => {
+  const location = useLocation();
+  const state = location.state;
+  const successMessage = state?.successMessage;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -28,7 +31,6 @@ const LogInPage = () => {
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
   });
-
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     dispatch(login(data));
     navigate("/");
@@ -37,6 +39,9 @@ const LogInPage = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <div>
+        {successMessage && <p>{successMessage}</p>}
+      </div>
       <Box
         sx={{
           marginTop: 8,

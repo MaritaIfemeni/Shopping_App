@@ -25,6 +25,13 @@ describe("Testin userReducer", () => {
     expect(usersReducer(undefined, { type: "" })).toEqual({
       users: [],
       currentUser: null,
+      userResponse: {
+        id: 0,
+        name: "",
+        email: "",
+        role: "",
+        avatar: "",
+      },
       loading: false,
       error: "",
     });

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
 import useAppDispatch from "../../hooks/useAppDispatch";
-import { createNewProduct } from "../../redux/reducers/productsReducer";
+import useAppSelector from "../../hooks/useAppSelector";
+import {
+  createNewProduct,
+  setProductResponse,
+} from "../../redux/reducers/productsReducer";
 
 const AddNewProduct = () => {
   const dispatch = useAppDispatch();
@@ -10,31 +14,31 @@ const AddNewProduct = () => {
   const [price, setPrice] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
   const [images, setImages] = useState<string[]>([]);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
+  const { productResponse } = useAppSelector((state) => state.productsReducer);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await dispatch(createNewProduct({ title, description, price, categoryId, images }));
-      setSuccessMessage("Product created successfully");
-      setErrorMessage("");
-      setTitle("");
-      setDescription("");
-      setPrice(0);
-      setCategoryId(0);
-      setImages([]);
+      const response = await dispatch(
+        createNewProduct({ title, description, price, categoryId, images })
+      );
+
+      if (response.payload) {
+        const product = response.payload;
+        console.log(product);
+        alert("Product created successfully!");
+      } else {
+        console.log(response);
+        alert("Failed to create product");
+      }
     } catch (error) {
-      setSuccessMessage("");
-      setErrorMessage("Failed to create product");
+      console.log(error);
+      alert("An error occurred while creating the product");
     }
   };
 
   return (
     <div className="add-new-product">
       <h2>Create New Product</h2>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="form-container">
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="form-group">

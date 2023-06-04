@@ -20,12 +20,14 @@ import {
 
 interface ProductsState {
   products: Product[];
+  productResponse: {};
   loading: boolean;
   error: string;
 }
 
 const initialState: ProductsState = {
   products: [],
+  productResponse: {},
   loading: false,
   error: "",
 };
@@ -40,7 +42,8 @@ export const fetchAllProducts = createAsyncThunk(
 export const createNewProduct = createAsyncThunk(
   "products/create",
   async (product: NewProduct) => {
-    return await createNewProductApi(product);
+    const response = await createNewProductApi(product);
+    return response;
   }
 );
 
@@ -75,6 +78,9 @@ const productsSlice = createSlice({
       });
       state.products = sortedProducts;
     },
+    setProductResponse: (state, action: PayloadAction<Product>) => {
+      state.productResponse = action.payload;
+    },
   },
   extraReducers: (build) => {
     build
@@ -93,14 +99,13 @@ const productsSlice = createSlice({
         state.products = action.payload;
         state.loading = false;
       })
-      .addMatcher(isFulfilled(createNewProduct), (state, action) => {
-        if (action.payload instanceof AxiosError) {
-          state.error = action.payload.message;
-        } else {
+      .addMatcher(
+        isFulfilled(createNewProduct),
+        (state, action: PayloadAction<Product>) => {
+          state.loading = false;
           state.products.push(action.payload);
         }
-        state.loading = false;
-      })
+      )
       .addMatcher(
         isAnyOf(
           fetchAllProducts.rejected,
@@ -144,6 +149,9 @@ const productsSlice = createSlice({
 });
 
 const productsReducer = productsSlice.reducer;
-export const { cleanUpProductReducer, filterProductsByPrice } =
-  productsSlice.actions;
+export const {
+  cleanUpProductReducer,
+  filterProductsByPrice,
+  setProductResponse,
+} = productsSlice.actions;
 export default productsReducer;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,13 +13,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import useAppDispatch from "../hooks/useAppDispatch";
-import { createNewUser } from "../redux/reducers/userReducer";
+import useAppSelector from "../hooks/useAppSelector";
+import { createNewUser, setUserResponse } from "../redux/reducers/userReducer";
 import { User } from "../types/User";
 import registrationSchema, {
   RegistrationFormData,
 } from "../validation/registrationSchema";
 
 const RegitsrationForm = () => {
+  const { userResponse } = useAppSelector(
+    (state) => state.usersReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -30,9 +33,9 @@ const RegitsrationForm = () => {
     resolver: yupResolver(registrationSchema),
   });
 
-  const onSubmit: SubmitHandler<RegistrationFormData> = (data) => {
-    dispatch(createNewUser(data));
-    navigate("/login");
+  const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
+    await dispatch(createNewUser(data));
+    navigate("/login", { state: { successMessage: "Account created successfully!" } });
   };
 
   return (

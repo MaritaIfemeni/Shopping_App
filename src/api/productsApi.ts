@@ -48,10 +48,8 @@ export const updateProductApi = async (product: UpdatedProduct) => {
 };
 
 export const deleteProductApi = async (id: number) => {
-  return makeApiCall<{ result: boolean; id: number }> ({
+  return makeApiCall<{ result: boolean; id: number }>({
     method: "DELETE",
     url: `/${id}`,
   });
 };
-
-

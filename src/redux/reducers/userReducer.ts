@@ -12,10 +12,18 @@ import { UserReducer } from "../../types/UserReducer";
 import { NewUser } from "../../types/NewUser";
 import { UserCredential } from "../../types/UserCredentials";
 import { UpdateUser } from "../../types/UpdateUser";
+import { number } from "yup";
 
 const initialState: UserReducer = {
   users: [],
   currentUser: null,
+  userResponse: {
+    id: 0,
+    name: "",
+    email: "",
+    role: "",
+    avatar: "",
+  },
   loading: false,
   error: "",
 };
@@ -125,6 +133,15 @@ const usersSlice = createSlice({
     cleanUpUserReducer: (state) => {
       return initialState;
     },
+    setUserResponse: (state, action: PayloadAction<User>) => {
+      state.userResponse = {
+        id: action.payload.id,
+        name: action.payload.name,
+        email: action.payload.email,
+        role: action.payload.role,
+        avatar: action.payload.avatar,
+      };
+    },
   },
   extraReducers: (build) => {
     build
@@ -201,5 +218,5 @@ const usersSlice = createSlice({
 });
 
 const usersReducer = usersSlice.reducer;
-export const { cleanUpUserReducer } = usersSlice.actions;
+export const { cleanUpUserReducer, setUserResponse } = usersSlice.actions;
 export default usersReducer;

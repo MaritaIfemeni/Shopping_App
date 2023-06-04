@@ -25,6 +25,7 @@ describe("Testing productsReduser", () => {
     const state = productsReducer(undefined, { type: "unknown" });
     expect(state).toEqual({
       products: [],
+      productResponse: {},
       loading: false,
       error: "",
     });
