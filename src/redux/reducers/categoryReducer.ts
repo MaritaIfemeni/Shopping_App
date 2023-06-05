@@ -27,7 +27,6 @@ const categorySlice = createSlice({
     cleanUpCategoriesReducer: (state) => {
       return initialState;
     },
-
     setCategories: (state, action: PayloadAction<Category[]>) => {
       state.categories = action.payload;
     },

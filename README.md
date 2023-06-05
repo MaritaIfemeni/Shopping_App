@@ -45,7 +45,6 @@ The purpose of this assignment was to create online store fetching data from Pla
 #### Issues to fix in the App
 
 - When user, either admin or customer, is logged in and is in a page which has private routing (like profile page), after refresh it will redirect back to login page.
-- AppBar is not behaving right when the loggin in is happening and gives an error in browser console. Funcionality is not affected.
 - Test for delete product is not working (stopped working after some refactoring).
 - Low performance
 

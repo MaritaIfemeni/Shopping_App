@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
 
 import shoppingImage from "../img/shopping.jpeg";
 import useAppSelector from "../hooks/useAppSelector";

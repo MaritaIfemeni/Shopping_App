@@ -68,10 +68,8 @@ export const authenticate = createAsyncThunk(
           },
         }
       );
-
       const user: User = authentication.data;
       user.isAdmin = user.role === "admin";
-
       return authentication.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -109,7 +107,6 @@ export const checkStoredToken = createAsyncThunk(
         const authentication = await dispatch(authenticate(token));
         return authentication.payload as User;
       }
-
       return null;
     } catch (e) {
       const error = e as AxiosError;

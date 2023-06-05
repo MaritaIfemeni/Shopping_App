@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -21,6 +21,7 @@ import { logoutToken } from "../redux/reducers/userReducer";
 
 const Header = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
   const { toggle, isOpen } = useModal();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,6 +29,8 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutToken());
+    setAnchorEl(null);
+    navigate("/");
   };
   const handleMenuOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
